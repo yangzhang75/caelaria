@@ -4,12 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Caelaria | Next-Generation Simulations & Institutional Security</title>
+    <!-- Import the premium tech font used in modern cyber/aerospace interfaces -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Segoe+UI:wght@300;400;600&display=swap" rel="stylesheet">
+    
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         :root {
@@ -25,6 +29,7 @@
             color: var(--text-silver);
             line-height: 1.6;
             overflow-x: hidden;
+            font-family: 'Segoe UI', sans-serif;
         }
 
         /* Navigation Header with Logo Integration */
@@ -43,17 +48,20 @@
         }
 
         .logo-img {
-            height: 50px;
+            height: 45px;
             width: auto;
             object-fit: contain;
         }
 
+        /* Fixed Brand Typography to match the mockup style */
         .logo-text {
-            font-size: 1.8rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.6rem;
             font-weight: 700;
-            letter-spacing: 0.25rem;
+            letter-spacing: 0.35rem;
             text-transform: uppercase;
             color: var(--text-silver);
+            text-shadow: 0 0 10px rgba(226, 232, 240, 0.2);
         }
 
         nav ul {
@@ -63,11 +71,12 @@
         }
 
         nav a {
+            font-family: 'Orbitron', sans-serif;
             color: var(--text-muted);
             text-decoration: none;
             text-transform: uppercase;
-            font-size: 0.85rem;
-            letter-spacing: 0.1rem;
+            font-size: 0.8rem;
+            letter-spacing: 0.15rem;
             transition: color 0.3s ease;
         }
 
@@ -78,33 +87,42 @@
         /* Hero Splash Section */
         .hero {
             text-align: center;
-            padding: 8rem 2rem;
+            padding: 9rem 2rem;
             max-width: 900px;
             margin: 0 auto;
         }
 
+        /* Transforming the generic main header into a striking brand title */
         .hero h1 {
-            font-size: 3.5rem;
-            font-weight: 300;
-            letter-spacing: 0.05rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4.5rem;
+            font-weight: 900;
+            letter-spacing: 0.6rem;
+            text-transform: uppercase;
             margin-bottom: 1.5rem;
+            background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 15px rgba(255,255,255,0.1));
         }
 
         .hero p {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: var(--text-muted);
-            margin-bottom: 3rem;
-            letter-spacing: 0.02rem;
+            margin-bottom: 3.5rem;
+            letter-spacing: 0.25rem;
+            text-transform: uppercase;
         }
 
         .cta-btn {
+            font-family: 'Orbitron', sans-serif;
             background: transparent;
             color: var(--teal-glow);
             border: 1px solid var(--teal-glow);
-            padding: 1rem 2.5rem;
-            font-size: 0.9rem;
+            padding: 1.1rem 3rem;
+            font-size: 0.85rem;
             text-transform: uppercase;
-            letter-spacing: 0.15rem;
+            letter-spacing: 0.2rem;
             cursor: pointer;
             border-radius: 4px;
             transition: all 0.4s ease;
@@ -114,14 +132,16 @@
         .cta-btn:hover {
             background: var(--teal-glow);
             color: var(--bg-dark);
-            box-shadow: 0 0 25px rgba(14, 165, 233, 0.4);
+            box-shadow: 0 0 25px rgba(14, 165, 233, 0.5);
+            transform: scale(1.02);
         }
 
         .section-title {
+            font-family: 'Orbitron', sans-serif;
             text-align: center;
             text-transform: uppercase;
-            letter-spacing: 0.2rem;
-            font-size: 1.8rem;
+            letter-spacing: 0.3rem;
+            font-size: 1.6rem;
             margin-bottom: 4rem;
             position: relative;
         }
@@ -129,7 +149,7 @@
         .section-title::after {
             content: '';
             display: block;
-            width: 50px;
+            width: 40px;
             height: 2px;
             background-color: var(--teal-glow);
             margin: 1rem auto 0;
@@ -161,8 +181,9 @@
         }
 
         .card-tag {
+            font-family: 'Orbitron', sans-serif;
             color: var(--teal-glow);
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 0.15rem;
             margin-bottom: 1rem;
@@ -170,8 +191,10 @@
         }
 
         .card h3 {
-            font-size: 1.4rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
             margin-bottom: 1rem;
+            letter-spacing: 0.05rem;
         }
 
         .card p {
@@ -181,11 +204,12 @@
         }
 
         .card-link {
+            font-family: 'Orbitron', sans-serif;
             color: var(--text-silver);
             text-decoration: none;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             text-transform: uppercase;
-            letter-spacing: 0.05rem;
+            letter-spacing: 0.1rem;
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
@@ -196,17 +220,18 @@
         }
 
         footer {
+            font-family: 'Orbitron', sans-serif;
             text-align: center;
             padding: 4rem 2rem;
             color: var(--text-muted);
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             border-top: 1px solid rgba(148, 163, 184, 0.05);
-            letter-spacing: 0.05rem;
+            letter-spacing: 0.1rem;
         }
 
         @media (max-width: 768px) {
             header { padding: 2rem; flex-direction: column; gap: 1.5rem; }
-            .hero h1 { font-size: 2.2rem; }
+            .hero h1 { font-size: 2.5rem; }
         }
     </style>
 </head>
@@ -214,9 +239,7 @@
 
     <header>
         <div class="logo-area">
-            <!-- Points to the new starry compass SVG file -->
             <img src="logo.svg" alt="Caelaria Logo" class="logo-img">
-            <!-- Adds the official brand text next to the icon -->
             <span class="logo-text">Caelaria</span>
         </div>
         <nav>
@@ -225,7 +248,7 @@
                 <li><a href="escapes.html">Escapes</a></li>
                 <li><a href="labs.html">Labs</a></li>
                 <li><a href="consulting.html">Consulting</a></li>
-                <li><a href="fees.html">Institutional Framework</a></li>
+                <li><a href="fees.html">Framework</a></li>
             </ul>
         </nav>
     </header>
