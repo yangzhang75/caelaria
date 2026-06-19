@@ -3,30 +3,40 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Caelaria | Intelligence Through Simulation</title>
+
+<title>Caelaria | Cyber, AI, Automation & Readiness</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
 :root{
     --bg:#12161a;
+    --bg-deep:#080d12;
     --bg-card:#1a1f26;
     --silver:#e2e8f0;
     --muted:#94a3b8;
     --teal:#0ea5e9;
-    --line:rgba(148,163,184,.12);
+    --teal-soft:rgba(14,165,233,.16);
+    --line:rgba(148,163,184,.13);
 }
 
-*{margin:0;padding:0;box-sizing:border-box;}
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
-html{scroll-behavior:smooth;}
+html{
+    scroll-behavior:smooth;
+}
 
 body{
     background:
-        radial-gradient(circle at top center, rgba(14,165,233,.12), transparent 40%),
-        linear-gradient(180deg,#0d1116,#12161a);
+        radial-gradient(circle at top center, rgba(14,165,233,.13), transparent 38%),
+        linear-gradient(180deg,#0b1016,#12161a 48%,#0b1016);
     color:var(--silver);
     font-family:'Inter',sans-serif;
     overflow-x:hidden;
@@ -37,10 +47,15 @@ body::before{
     position:fixed;
     inset:0;
     background-image:
-        linear-gradient(rgba(14,165,233,.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(14,165,233,.03) 1px, transparent 1px);
-    background-size:60px 60px;
+        linear-gradient(rgba(14,165,233,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(14,165,233,.025) 1px, transparent 1px);
+    background-size:64px 64px;
     pointer-events:none;
+    z-index:-1;
+}
+
+a{
+    color:inherit;
 }
 
 header{
@@ -52,26 +67,27 @@ header{
     align-items:center;
     padding:1rem 2rem;
     border-bottom:1px solid var(--line);
-    backdrop-filter:blur(10px);
-    background:rgba(18,22,26,.85);
+    backdrop-filter:blur(12px);
+    background:rgba(8,13,18,.82);
 }
 
 .logo-area img{
     height:42px;
     width:auto;
+    display:block;
 }
 
 nav ul{
     display:flex;
     list-style:none;
-    gap:2rem;
+    gap:1.8rem;
 }
 
 nav a{
     text-decoration:none;
     color:var(--muted);
     font-family:'Orbitron',sans-serif;
-    font-size:.75rem;
+    font-size:.72rem;
     letter-spacing:.15rem;
     text-transform:uppercase;
     transition:.3s ease;
@@ -79,17 +95,17 @@ nav a{
 
 nav a:hover{
     color:var(--teal);
-    text-shadow:0 0 10px rgba(14,165,233,.5);
+    text-shadow:0 0 12px rgba(14,165,233,.6);
 }
 
 .hero{
-    min-height:85vh;
+    min-height:88vh;
     display:flex;
     flex-direction:column;
     justify-content:center;
     align-items:center;
     text-align:center;
-    padding:2rem 1rem 4rem;
+    padding:2.5rem 1rem 4.5rem;
 }
 
 .hero-image-container{
@@ -97,13 +113,22 @@ nav a:hover{
     display:flex;
     justify-content:center;
     align-items:center;
-    margin-bottom:2rem;
+    margin-bottom:2.1rem;
 }
 
 .hero-full-image{
-    width:min(1200px,94vw);
+    width:min(1220px,95vw);
     height:auto;
     display:block;
+    filter:drop-shadow(0 0 22px rgba(14,165,233,.13));
+}
+
+.hero-subtext{
+    max-width:840px;
+    margin:0 auto 2rem;
+    color:var(--muted);
+    line-height:1.8;
+    font-size:1.02rem;
 }
 
 .cta-row{
@@ -121,7 +146,7 @@ nav a:hover{
     padding:1rem 2rem;
     border-radius:6px;
     transition:.3s ease;
-    font-size:.75rem;
+    font-size:.74rem;
 }
 
 .btn-primary{
@@ -139,6 +164,7 @@ nav a:hover{
 .btn-secondary{
     border:1px solid var(--line);
     color:var(--silver);
+    background:rgba(26,31,38,.35);
 }
 
 .btn-secondary:hover{
@@ -159,7 +185,7 @@ section{
     color:var(--teal);
     font-family:'Orbitron',sans-serif;
     text-transform:uppercase;
-    letter-spacing:.2rem;
+    letter-spacing:.22rem;
     font-size:.7rem;
     margin-bottom:1rem;
 }
@@ -167,59 +193,34 @@ section{
 .section-title{
     font-family:'Orbitron',sans-serif;
     text-transform:uppercase;
-    font-size:clamp(1.6rem,4vw,2.8rem);
+    font-size:clamp(1.55rem,4vw,2.8rem);
     margin-bottom:1.25rem;
+    line-height:1.2;
 }
 
 .section-text{
     color:var(--muted);
-    max-width:850px;
+    max-width:880px;
     line-height:1.9;
+    font-size:1rem;
 }
 
-.mission{
-    padding:7rem 2rem;
+.statement{
+    background:
+        linear-gradient(90deg, transparent, rgba(14,165,233,.12), transparent);
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    text-align:center;
 }
 
-.mission-statement{
-    font-family:'Orbitron',sans-serif;
-    font-size:clamp(1.4rem,2vw,2rem);
-    color:var(--silver);
-    margin-bottom:2rem;
-    letter-spacing:.05rem;
+.statement h2{
+    max-width:1050px;
+    margin:0 auto 1.4rem;
 }
 
-.mission-grid{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:1.5rem;
-    margin-top:4rem;
-}
-
-.mission-item{
-    background:rgba(26,31,38,.5);
-    border:1px solid var(--line);
-    border-radius:12px;
-    padding:1.5rem;
-    transition:.3s ease;
-}
-
-.mission-item:hover{
-    border-color:rgba(14,165,233,.4);
-    transform:translateY(-4px);
-}
-
-.mission-item span{
-    display:block;
-    color:var(--teal);
-    font-family:'Orbitron',sans-serif;
-    letter-spacing:.15rem;
-    margin-bottom:1rem;
-}
-
-.mission-item p{
-    color:var(--muted);
-    line-height:1.7;
+.statement p{
+    max-width:900px;
+    margin:auto;
 }
 
 .grid{
@@ -230,29 +231,38 @@ section{
 }
 
 .card{
-    background:linear-gradient(180deg,#1a1f26,#11161c);
+    background:
+        radial-gradient(circle at top right, rgba(14,165,233,.08), transparent 34%),
+        linear-gradient(180deg,#1a1f26,#10151b);
     border:1px solid var(--line);
     border-radius:14px;
     padding:2rem;
     transition:.3s ease;
+    min-height:280px;
+    display:flex;
+    flex-direction:column;
 }
 
 .card:hover{
-    transform:translateY(-6px);
-    border-color:rgba(14,165,233,.4);
+    transform:translateY(-7px);
+    border-color:rgba(14,165,233,.45);
+    box-shadow:0 0 28px rgba(14,165,233,.08);
 }
 
 .card-tag{
     font-family:'Orbitron',sans-serif;
     color:var(--teal);
-    font-size:.7rem;
-    letter-spacing:.15rem;
+    font-size:.68rem;
+    letter-spacing:.16rem;
     text-transform:uppercase;
 }
 
 .card h3{
     margin:1rem 0;
     font-family:'Orbitron',sans-serif;
+    font-size:1.08rem;
+    line-height:1.35;
+    text-transform:uppercase;
 }
 
 .card p{
@@ -262,14 +272,99 @@ section{
 }
 
 .card a{
+    margin-top:auto;
     color:var(--silver);
     font-family:'Orbitron',sans-serif;
-    font-size:.75rem;
+    font-size:.74rem;
     text-decoration:none;
     letter-spacing:.12rem;
+    text-transform:uppercase;
 }
 
 .card a:hover{
+    color:var(--teal);
+}
+
+.service-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:1.5rem;
+    margin-top:3rem;
+}
+
+.service{
+    background:rgba(26,31,38,.52);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:2rem;
+}
+
+.service h3{
+    font-family:'Orbitron',sans-serif;
+    text-transform:uppercase;
+    font-size:1rem;
+    margin-bottom:1rem;
+    color:var(--silver);
+}
+
+.service ul{
+    list-style:none;
+}
+
+.service li{
+    color:var(--muted);
+    line-height:1.9;
+    border-bottom:1px solid rgba(148,163,184,.07);
+    padding:.45rem 0;
+}
+
+.service li::before{
+    content:'// ';
+    color:var(--teal);
+}
+
+.order-panel{
+    margin-top:3rem;
+    display:grid;
+    grid-template-columns:1.1fr .9fr;
+    gap:1.5rem;
+    align-items:stretch;
+}
+
+.order-box{
+    background:
+        radial-gradient(circle at top left, rgba(14,165,233,.13), transparent 36%),
+        #070b0f;
+    border:1px solid rgba(14,165,233,.28);
+    border-radius:16px;
+    padding:2.4rem;
+    box-shadow:0 0 40px rgba(14,165,233,.07);
+}
+
+.order-box h3{
+    font-family:'Orbitron',sans-serif;
+    text-transform:uppercase;
+    margin-bottom:1rem;
+}
+
+.order-box p{
+    color:var(--muted);
+    line-height:1.85;
+    margin-bottom:1.8rem;
+}
+
+.console{
+    background:#070b0f;
+    border:1px solid rgba(14,165,233,.25);
+    border-radius:16px;
+    padding:1.6rem;
+    box-shadow:0 0 40px rgba(14,165,233,.06);
+    font-family:"Courier New",monospace;
+    color:#9fdcff;
+    line-height:1.85;
+}
+
+.prompt{
     color:var(--teal);
 }
 
@@ -288,21 +383,9 @@ section{
     font-family:'Orbitron',sans-serif;
     letter-spacing:.12rem;
     background:rgba(26,31,38,.5);
+    text-transform:uppercase;
+    font-size:.75rem;
 }
-
-.console{
-    margin-top:3rem;
-    background:#070b0f;
-    border:1px solid rgba(14,165,233,.28);
-    border-radius:14px;
-    padding:1.5rem;
-    box-shadow:0 0 40px rgba(14,165,233,.08);
-    font-family:"Courier New",monospace;
-    color:#9fdcff;
-    line-height:1.8;
-}
-
-.prompt{color:var(--teal);}
 
 footer{
     border-top:1px solid var(--line);
@@ -310,11 +393,11 @@ footer{
     padding:3rem 1rem;
     color:var(--muted);
     font-family:'Orbitron',sans-serif;
-    font-size:.75rem;
+    font-size:.72rem;
     letter-spacing:.12rem;
 }
 
-@media(max-width:900px){
+@media(max-width:950px){
     header{
         flex-direction:column;
         gap:1rem;
@@ -327,7 +410,8 @@ footer{
     }
 
     .grid,
-    .mission-grid,
+    .service-grid,
+    .order-panel,
     .lifecycle{
         grid-template-columns:1fr;
     }
@@ -335,6 +419,10 @@ footer{
     .hero{
         min-height:auto;
         padding-top:4rem;
+    }
+
+    .hero-full-image{
+        width:98vw;
     }
 }
 </style>
@@ -344,7 +432,9 @@ footer{
 
 <header>
     <div class="logo-area">
-        <img src="logo.png" alt="Caelaria Logo">
+        <a href="index.html">
+            <img src="logo.png" alt="Caelaria Logo">
+        </a>
     </div>
 
     <nav>
@@ -352,87 +442,76 @@ footer{
             <li><a href="index.html">Home</a></li>
             <li><a href="escapes.html">Escapes</a></li>
             <li><a href="labs.html">Labs</a></li>
+            <li><a href="orders.html">Orders</a></li>
             <li><a href="consulting.html">Consulting</a></li>
             <li><a href="framework.html">Framework</a></li>
         </ul>
     </nav>
 </header>
 
+<main>
+
 <section class="hero">
     <div class="hero-image-container">
-        <img src="fullimage.png" alt="Caelaria" class="hero-full-image">
+        <img src="fullimage.png" alt="Caelaria - Cyber, AI, Automation, and Readiness" class="hero-full-image">
     </div>
 
+    <p class="hero-subtext">
+        Gamified cyber and AI training, technical sandboxes, custom AI agents, workflow automation, and readiness consulting for organizations across industries.
+    </p>
+
     <div class="cta-row">
-        <a href="escapes.html" class="btn btn-primary">Initialize Environments</a>
-        <a href="framework.html" class="btn btn-secondary">View Framework</a>
+        <a href="orders.html" class="btn btn-primary">Purchase or Custom Order</a>
+        <a href="escapes.html" class="btn btn-secondary">Explore Simulations</a>
     </div>
 </section>
 
-<section class="mission">
+<section class="statement">
     <div class="container">
-        <div class="section-label">Why Caelaria</div>
+        <div class="section-label">The Caelaria Mission</div>
 
-        <h2 class="section-title">From Compliance To Readiness</h2>
-
-        <p class="mission-statement">
-            Most organizations train for compliance. Few train for crisis.
-        </p>
+        <h2 class="section-title">
+            Build skill, confidence, and readiness through immersive cyber and AI simulation.
+        </h2>
 
         <p class="section-text">
-            Caelaria transforms static policies, awareness training, and compliance requirements into immersive simulation environments that build operational confidence before real-world incidents occur.
+            Caelaria helps teams move beyond passive training by placing learners inside interactive missions, technical practice environments, automation workflows, and decision-based simulations that reflect the challenges organizations face now.
         </p>
-
-        <div class="mission-grid">
-            <div class="mission-item">
-                <span>Assess</span>
-                <p>Identify operational gaps and readiness risks.</p>
-            </div>
-
-            <div class="mission-item">
-                <span>Simulate</span>
-                <p>Practice realistic scenarios in controlled environments.</p>
-            </div>
-
-            <div class="mission-item">
-                <span>Validate</span>
-                <p>Measure response effectiveness and decision quality.</p>
-            </div>
-
-            <div class="mission-item">
-                <span>Prepare</span>
-                <p>Strengthen institutional resilience and confidence.</p>
-            </div>
-        </div>
     </div>
 </section>
 
 <section>
     <div class="container">
-        <div class="section-label">Operational Pillars</div>
+        <div class="section-label">Core Solutions</div>
 
-        <h2 class="section-title">The Simulation Ecosystem</h2>
+        <h2 class="section-title">One Platform Vision. Multiple Ways To Train, Build, And Prepare.</h2>
 
         <div class="grid">
             <div class="card">
                 <div class="card-tag">Caelaria Escapes</div>
-                <h3>Gamified Compliance Realities</h3>
-                <p>High-pressure decision environments that test regulatory understanding, reporting requirements, and crisis response readiness.</p>
+                <h3>Gamified Cyber & AI Training</h3>
+                <p>
+                    Story-driven simulations that turn cybersecurity, AI literacy, incident response, ethics, risk, and decision-making into engaging missions for learners and workforce teams.
+                </p>
                 <a href="escapes.html">View Escapes →</a>
             </div>
 
             <div class="card">
                 <div class="card-tag">Caelaria Labs</div>
-                <h3>Adaptive Technical Sandboxes</h3>
-                <p>Cloud-first technical environments for cybersecurity, systems administration, AI experimentation, and defensive operations.</p>
+                <h3>Technical Sandboxes</h3>
+                <p>
+                    Hands-on environments for practicing cyber defense, AI experimentation, secure systems, automation, cloud, scripting, and technical problem solving.
+                </p>
                 <a href="labs.html">Access Labs →</a>
             </div>
 
             <div class="card">
-                <div class="card-tag">Caelaria Advisory</div>
-                <h3>Institutional Strategy</h3>
-                <p>Readiness assessments, framework development, custom simulation design, and strategic advisory services.</p>
-                <a href="consulting.html">Request Advisory →</a>
+                <div class="card-tag">Caelaria Consulting</div>
+                <h3>AI, Automation & Readiness</h3>
+                <p>
+                    Custom AI agents, workflow automation, cyber and AI strategy, policy support, readiness planning, compliance guidance, and tailored simulation design.
+                </p>
+                <a href="consulting.html">Request Consulting →</a>
             </div>
         </div>
     </div>
@@ -440,33 +519,123 @@ footer{
 
 <section>
     <div class="container">
-        <div class="section-label">Readiness Lifecycle</div>
+        <div class="section-label">What Caelaria Builds</div>
 
-        <h2 class="section-title">Assess. Simulate. Validate. Prepare. Respond.</h2>
+        <h2 class="section-title">Cyber. AI. Automation. Readiness.</h2>
 
         <p class="section-text">
-            Caelaria helps organizations move from awareness to action through measurable, repeatable readiness cycles.
+            Caelaria is designed for education, business, government, healthcare, manufacturing, nonprofits, and teams that need modern training or intelligent workflow support without generic one-size-fits-all solutions.
+        </p>
+
+        <div class="service-grid">
+            <div class="service">
+                <h3>Training & Simulation</h3>
+                <ul>
+                    <li>Gamified cyber awareness experiences</li>
+                    <li>AI literacy and responsible-use simulations</li>
+                    <li>Incident response and decision-based exercises</li>
+                    <li>Executive tabletop and role-based scenarios</li>
+                    <li>Custom escape-style learning missions</li>
+                </ul>
+            </div>
+
+            <div class="service">
+                <h3>Technical Practice</h3>
+                <ul>
+                    <li>Cybersecurity labs and skill challenges</li>
+                    <li>AI sandbox learning environments</li>
+                    <li>Cloud and automation practice environments</li>
+                    <li>Secure coding and systems exercises</li>
+                    <li>Portfolio-ready technical experiences</li>
+                </ul>
+            </div>
+
+            <div class="service">
+                <h3>AI Agents & Automation</h3>
+                <ul>
+                    <li>Custom AI assistants and knowledge-base agents</li>
+                    <li>Department-specific workflow agents</li>
+                    <li>Document, reporting, and intake automation</li>
+                    <li>Student, customer, or employee support agents</li>
+                    <li>AI-enhanced operational process design</li>
+                </ul>
+            </div>
+
+            <div class="service">
+                <h3>Consulting & Readiness</h3>
+                <ul>
+                    <li>Cybersecurity and AI strategy</li>
+                    <li>AI governance and acceptable-use guidance</li>
+                    <li>Policy, procedure, and readiness reviews</li>
+                    <li>HB96/HB99 and compliance support where needed</li>
+                    <li>Custom training roadmaps and implementation planning</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="container">
+        <div class="section-label">Purchase & Custom Order</div>
+
+        <h2 class="section-title">Start With A Ready-Made Experience Or Commission A Custom Build.</h2>
+
+        <p class="section-text">
+            Organizations can purchase ready-made simulations and training experiences or request custom solutions built around their audience, industry, goals, systems, policies, or workflow needs.
+        </p>
+
+        <div class="order-panel">
+            <div class="order-box">
+                <h3>Ready-Made Solutions</h3>
+                <p>
+                    Select from existing cyber, AI, awareness, and simulation-based training experiences designed for quick deployment across teams, classes, or departments.
+                </p>
+                <a href="orders.html" class="btn btn-primary">View Orders</a>
+            </div>
+
+            <div class="order-box">
+                <h3>Custom Builds</h3>
+                <p>
+                    Request a custom escape, lab, AI agent, automation workflow, training pathway, or consulting engagement designed for your organization.
+                </p>
+                <a href="consulting.html" class="btn btn-secondary">Request Custom Work</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="container">
+        <div class="section-label">Readiness Framework</div>
+
+        <h2 class="section-title">Assess. Simulate. Build. Automate. Prepare.</h2>
+
+        <p class="section-text">
+            Caelaria combines learning design, AI capability, cyber expertise, workflow strategy, and practical simulation to help organizations strengthen people, processes, and systems.
         </p>
 
         <div class="lifecycle">
             <div class="step">Assess</div>
             <div class="step">Simulate</div>
-            <div class="step">Validate</div>
+            <div class="step">Build</div>
+            <div class="step">Automate</div>
             <div class="step">Prepare</div>
-            <div class="step">Respond</div>
         </div>
 
-        <div class="console">
-            <div><span class="prompt">caelaria://</span> initializing institutional readiness environment...</div>
-            <div><span class="prompt">status:</span> scenario matrix loaded</div>
-            <div><span class="prompt">modules:</span> compliance | cyber | AI | incident response</div>
-            <div><span class="prompt">objective:</span> convert policy knowledge into operational muscle memory</div>
+        <div class="console" style="margin-top:3rem;">
+            <div><span class="prompt">caelaria://</span> initializing cross-industry readiness environment...</div>
+            <div><span class="prompt">focus:</span> cyber | AI | automation | simulation | consulting</div>
+            <div><span class="prompt">delivery:</span> ready-made experiences | custom builds | advisory support</div>
+            <div><span class="prompt">objective:</span> convert training, tools, and workflows into operational readiness</div>
         </div>
     </div>
 </section>
 
+</main>
+
 <footer>
-    © 2026 CAELARIA • INTELLIGENCE THROUGH SIMULATION • REAL-WORLD READINESS
+    © 2026 CAELARIA • CYBER • AI • AUTOMATION • READINESS
 </footer>
 
 </body>
