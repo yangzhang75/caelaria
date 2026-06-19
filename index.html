@@ -42,11 +42,18 @@
             gap: 1rem;
         }
 
-        /* Pulls your repository image automatically */
         .logo-img {
             height: 50px;
             width: auto;
             object-fit: contain;
+        }
+
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 0.25rem;
+            text-transform: uppercase;
+            color: var(--text-silver);
         }
 
         nav ul {
@@ -207,7 +214,10 @@
 
     <header>
         <div class="logo-area">
-            <img src="watermarked_img_7213738819476798216.png" alt="Caelaria Logo" class="logo-img">
+            <!-- Points to the new starry compass SVG file -->
+            <img src="logo.svg" alt="Caelaria Logo" class="logo-img">
+            <!-- Adds the official brand text next to the icon -->
+            <span class="logo-text">Caelaria</span>
         </div>
         <nav>
             <ul>
