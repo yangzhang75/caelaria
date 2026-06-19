@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -7,429 +8,419 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
-:root {
-    --bg: #12161a;
-    --card: #1a1f26;
-    --silver: #e2e8f0;
-    --muted: #94a3b8;
-    --teal: #0ea5e9;
-    --line: rgba(148, 163, 184, 0.14);
+
+:root{
+    --bg:#12161a;
+    --bg-card:#1a1f26;
+    --silver:#e2e8f0;
+    --muted:#94a3b8;
+    --teal:#0ea5e9;
+    --line:rgba(148,163,184,.12);
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
-body {
+html{
+    scroll-behavior:smooth;
+}
+
+body{
     background:
-        radial-gradient(circle at top, rgba(14,165,233,.12), transparent 35%),
-        linear-gradient(180deg, #0d1116, var(--bg));
-    color: var(--silver);
-    font-family: Inter, sans-serif;
-    overflow-x: hidden;
+        radial-gradient(circle at top center, rgba(14,165,233,.12), transparent 40%),
+        linear-gradient(180deg,#0d1116,#12161a);
+    color:var(--silver);
+    font-family:'Inter',sans-serif;
+    overflow-x:hidden;
 }
 
-body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
+body::before{
+    content:'';
+    position:fixed;
+    inset:0;
     background-image:
-        linear-gradient(rgba(14,165,233,.045) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(14,165,233,.045) 1px, transparent 1px);
-    background-size: 60px 60px;
-    mask-image: linear-gradient(to bottom, rgba(0,0,0,.6), transparent);
-    pointer-events: none;
+        linear-gradient(rgba(14,165,233,.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(14,165,233,.03) 1px, transparent 1px);
+    background-size:60px 60px;
+    pointer-events:none;
 }
 
-header {
-    height: 86px;
-    padding: 0 4rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid var(--line);
-    backdrop-filter: blur(12px);
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    background: rgba(18, 22, 26, .78);
+header{
+    position:sticky;
+    top:0;
+    z-index:999;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:1rem 2rem;
+    border-bottom:1px solid var(--line);
+    backdrop-filter:blur(10px);
+    background:rgba(18,22,26,.85);
 }
 
-.nav-logo {
-    height: 46px;
+.logo-area img{
+    height:42px;
+    width:auto;
 }
 
-nav {
-    display: flex;
-    gap: 2.2rem;
+nav ul{
+    display:flex;
+    list-style:none;
+    gap:2rem;
 }
 
-nav a {
-    font-family: Orbitron, sans-serif;
-    color: var(--muted);
-    text-decoration: none;
-    text-transform: uppercase;
-    letter-spacing: .18rem;
-    font-size: .78rem;
-    transition: .3s;
+nav a{
+    text-decoration:none;
+    color:var(--muted);
+    font-family:'Orbitron',sans-serif;
+    font-size:.75rem;
+    letter-spacing:.15rem;
+    text-transform:uppercase;
+    transition:.3s ease;
 }
 
-nav a:hover {
-    color: var(--teal);
-    text-shadow: 0 0 12px rgba(14,165,233,.8);
+nav a:hover{
+    color:var(--teal);
+    text-shadow:0 0 10px rgba(14,165,233,.5);
 }
 
-.hero {
-    min-height: calc(100vh - 86px);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem 1rem;
-    text-align: center;
+.hero{
+    min-height:85vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:2rem 1rem 4rem;
 }
 
-.hero-icon {
-    width: 120px;
-    margin-bottom: 1rem;
-    filter: drop-shadow(0 0 22px rgba(14,165,233,.35));
+.hero-image-container{
+    width:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin-bottom:2rem;
 }
 
-.hero-name {
-    width: min(700px, 85vw);
-    margin-bottom: .75rem;
+.hero-full-image{
+    width:min(1100px,92vw);
+    height:auto;
+    display:block;
 }
 
-.hero-tagline {
-    width: min(500px, 75vw);
-    margin-bottom: 2rem;
+.cta-row{
+    display:flex;
+    gap:1rem;
+    flex-wrap:wrap;
+    justify-content:center;
 }
 
-.cta-row {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-    
-.btn {
-    font-family: Orbitron, sans-serif;
-    text-decoration: none;
-    text-transform: uppercase;
-    letter-spacing: .18rem;
-    font-size: .78rem;
-    padding: 1rem 2.2rem;
-    border-radius: 6px;
-    transition: .35s;
+.btn{
+    font-family:'Orbitron',sans-serif;
+    text-transform:uppercase;
+    letter-spacing:.15rem;
+    text-decoration:none;
+    padding:1rem 2rem;
+    border-radius:6px;
+    transition:.3s ease;
+    font-size:.75rem;
 }
 
-.btn-primary {
-    border: 1px solid var(--teal);
-    color: var(--teal);
-    box-shadow: 0 0 20px rgba(14,165,233,.15);
+.btn-primary{
+    color:var(--teal);
+    border:1px solid var(--teal);
+    box-shadow:0 0 20px rgba(14,165,233,.12);
 }
 
-.btn-primary:hover {
-    background: var(--teal);
-    color: #071015;
-    box-shadow: 0 0 34px rgba(14,165,233,.55);
-    transform: translateY(-2px);
+.btn-primary:hover{
+    background:var(--teal);
+    color:#071015;
+    box-shadow:0 0 30px rgba(14,165,233,.45);
 }
 
-.btn-secondary {
-    border: 1px solid var(--line);
-    color: var(--silver);
+.btn-secondary{
+    border:1px solid var(--line);
+    color:var(--silver);
 }
 
-.btn-secondary:hover {
-    border-color: var(--teal);
-    color: var(--teal);
+.btn-secondary:hover{
+    border-color:var(--teal);
+    color:var(--teal);
 }
 
-section {
-    padding: 6rem 2rem;
+section{
+    padding:6rem 2rem;
 }
 
-.container {
-    max-width: 1180px;
-    margin: auto;
+.container{
+    max-width:1200px;
+    margin:auto;
 }
 
-.eyebrow {
-    font-family: Orbitron, sans-serif;
-    color: var(--teal);
-    letter-spacing: .22rem;
-    text-transform: uppercase;
-    font-size: .72rem;
-    margin-bottom: 1rem;
+.section-label{
+    color:var(--teal);
+    font-family:'Orbitron',sans-serif;
+    text-transform:uppercase;
+    letter-spacing:.2rem;
+    font-size:.7rem;
+    margin-bottom:1rem;
 }
 
-h1, h2, h3 {
-    font-family: Orbitron, sans-serif;
-    text-transform: uppercase;
+.section-title{
+    font-family:'Orbitron',sans-serif;
+    text-transform:uppercase;
+    font-size:clamp(1.6rem,4vw,2.8rem);
+    margin-bottom:1.25rem;
 }
 
-h2 {
-    font-size: clamp(1.6rem, 4vw, 2.8rem);
-    letter-spacing: .12rem;
-    margin-bottom: 1.3rem;
+.section-text{
+    color:var(--muted);
+    max-width:850px;
+    line-height:1.9;
 }
 
-.lead {
-    color: var(--muted);
-    max-width: 780px;
-    font-size: 1.05rem;
-    line-height: 1.85;
+.grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:1.5rem;
+    margin-top:3rem;
 }
 
-.grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.4rem;
-    margin-top: 3rem;
+.card{
+    background:linear-gradient(180deg,#1a1f26,#11161c);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:2rem;
+    transition:.3s ease;
 }
 
-.card {
-    background: linear-gradient(180deg, rgba(26,31,38,.92), rgba(13,17,22,.92));
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    padding: 2rem;
-    min-height: 260px;
-    position: relative;
-    overflow: hidden;
-    transition: .35s;
+.card:hover{
+    transform:translateY(-6px);
+    border-color:rgba(14,165,233,.4);
 }
 
-.card::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at top right, rgba(14,165,233,.18), transparent 35%);
-    opacity: 0;
-    transition: .35s;
+.card-tag{
+    font-family:'Orbitron',sans-serif;
+    color:var(--teal);
+    font-size:.7rem;
+    letter-spacing:.15rem;
+    text-transform:uppercase;
 }
 
-.card:hover {
-    transform: translateY(-8px);
-    border-color: rgba(14,165,233,.45);
+.card h3{
+    margin:1rem 0;
+    font-family:'Orbitron',sans-serif;
 }
 
-.card:hover::before {
-    opacity: 1;
+.card p{
+    color:var(--muted);
+    line-height:1.8;
 }
 
-.card h3, .card p, .card a, .card span {
-    position: relative;
+.lifecycle{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:1rem;
+    margin-top:3rem;
 }
 
-.card span {
-    font-family: Orbitron, sans-serif;
-    color: var(--teal);
-    font-size: .7rem;
-    letter-spacing: .18rem;
-    text-transform: uppercase;
+.step{
+    text-align:center;
+    padding:1.2rem;
+    border:1px solid var(--line);
+    border-radius:10px;
+    font-family:'Orbitron',sans-serif;
+    letter-spacing:.12rem;
+    background:rgba(26,31,38,.5);
 }
 
-.card h3 {
-    margin: 1rem 0;
-    font-size: 1.15rem;
+footer{
+    border-top:1px solid var(--line);
+    text-align:center;
+    padding:3rem 1rem;
+    color:var(--muted);
+    font-family:'Orbitron',sans-serif;
+    font-size:.75rem;
+    letter-spacing:.12rem;
 }
 
-.card p {
-    color: var(--muted);
-    line-height: 1.7;
-    margin-bottom: 1.5rem;
-}
+@media(max-width:900px){
 
-.card a {
-    color: var(--silver);
-    font-family: Orbitron, sans-serif;
-    font-size: .75rem;
-    text-decoration: none;
-    letter-spacing: .12rem;
-}
-
-.card a:hover {
-    color: var(--teal);
-}
-
-.lifecycle {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: .8rem;
-    margin-top: 3rem;
-}
-
-.step {
-    border: 1px solid var(--line);
-    padding: 1.3rem .9rem;
-    text-align: center;
-    border-radius: 10px;
-    font-family: Orbitron, sans-serif;
-    color: var(--silver);
-    letter-spacing: .14rem;
-    font-size: .74rem;
-    background: rgba(26,31,38,.58);
-}
-
-.console {
-    margin-top: 3rem;
-    background: #070b0f;
-    border: 1px solid rgba(14,165,233,.28);
-    border-radius: 14px;
-    padding: 1.5rem;
-    box-shadow: 0 0 40px rgba(14,165,233,.08);
-    font-family: "Courier New", monospace;
-    color: #9fdcff;
-    line-height: 1.8;
-}
-
-.prompt {
-    color: var(--teal);
-}
-
-footer {
-    border-top: 1px solid var(--line);
-    text-align: center;
-    padding: 3rem 1rem;
-    color: var(--muted);
-    font-family: Orbitron, sans-serif;
-    font-size: .72rem;
-    letter-spacing: .12rem;
-}
-
-@keyframes pulse {
-    0%, 100% { transform: scale(1); filter: drop-shadow(0 0 18px rgba(14,165,233,.32)); }
-    50% { transform: scale(1.035); filter: drop-shadow(0 0 34px rgba(14,165,233,.58)); }
-}
-
-@media (max-width: 850px) {
-    header {
-        padding: 1rem 1.4rem;
-        height: auto;
-        flex-direction: column;
-        gap: 1rem;
+    header{
+        flex-direction:column;
+        gap:1rem;
     }
 
-    nav {
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 1rem;
+    nav ul{
+        flex-wrap:wrap;
+        justify-content:center;
+        gap:1rem;
     }
 
-    .grid,
-    .lifecycle {
-        grid-template-columns: 1fr;
+    .grid{
+        grid-template-columns:1fr;
     }
 
-    .hero {
-        min-height: auto;
-        padding-top: 4rem;
+    .lifecycle{
+        grid-template-columns:1fr;
+    }
+
+    .hero{
+        min-height:auto;
+        padding-top:4rem;
     }
 }
+
 </style>
+
 </head>
 
 <body>
 
 <header>
-    <img src="logo.png" alt="Caelaria logo" class="nav-logo">
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="escapes.html">Escapes</a>
-        <a href="labs.html">Labs</a>
-        <a href="consulting.html">Consulting</a>
-        <a href="framework.html">Framework</a>
-    </nav>
+
+```
+<div class="logo-area">
+    <img src="logo.png" alt="Caelaria Logo">
+</div>
+
+<nav>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="escapes.html">Escapes</a></li>
+        <li><a href="labs.html">Labs</a></li>
+        <li><a href="consulting.html">Consulting</a></li>
+        <li><a href="framework.html">Framework</a></li>
+    </ul>
+</nav>
+```
+
 </header>
 
-<main>
-
 <section class="hero">
-    <img src="logo.png" alt="Caelaria compass emblem" class="hero-icon">
-    <img src="name.png" alt="Caelaria" class="hero-name">
-    <img src="tagline.png" alt="Intelligence Through Simulation. Real-World Readiness." class="hero-tagline">
 
-    <div class="cta-row">
-        <a href="escapes.html" class="btn btn-primary">Initialize Environments</a>
-        <a href="framework.html" class="btn btn-secondary">View Framework</a>
-    </div>
+```
+<div class="hero-image-container">
+    <img src="fullimage.png" alt="Caelaria" class="hero-full-image">
+</div>
+
+<div class="cta-row">
+    <a href="escapes.html" class="btn btn-primary">
+        Initialize Environments
+    </a>
+
+    <a href="framework.html" class="btn btn-secondary">
+        View Framework
+    </a>
+</div>
+```
+
 </section>
 
 <section>
-    <div class="container">
-        <div class="eyebrow">Mission Architecture</div>
-        <h2>From Compliance to Readiness</h2>
-        <p class="lead">
-            Caelaria transforms passive training, static audits, and routine compliance exercises into dynamic simulation environments where institutions can practice crisis response, validate decision-making, and build operational confidence before real incidents occur.
-        </p>
+
+```
+<div class="container">
+
+    <div class="section-label">
+        Mission Architecture
     </div>
+
+    <h2 class="section-title">
+        From Compliance To Readiness
+    </h2>
+
+    <p class="section-text">
+        Caelaria transforms static training, compliance reviews, and traditional awareness programs into immersive simulation environments that build operational confidence, institutional resilience, and measurable readiness before real-world incidents occur.
+    </p>
+
+</div>
+```
+
 </section>
 
 <section>
-    <div class="container">
-        <div class="eyebrow">Operational Pillars</div>
-        <h2>The Simulation Ecosystem</h2>
 
-        <div class="grid">
-            <div class="card">
-                <span>Caelaria Escapes</span>
-                <h3>Gamified Compliance Realities</h3>
-                <p>Immersive crisis simulations that test judgment, reporting accuracy, and institutional response under pressure.</p>
-                <a href="escapes.html">View Escapes →</a>
-            </div>
+```
+<div class="container">
 
-            <div class="card">
-                <span>Caelaria Labs</span>
-                <h3>Adaptive Technical Sandboxes</h3>
-                <p>Isolated technical environments for cybersecurity, systems, AI, and defensive operations training.</p>
-                <a href="labs.html">Access Labs →</a>
-            </div>
-
-            <div class="card">
-                <span>Caelaria Advisory</span>
-                <h3>Institutional Strategy</h3>
-                <p>Framework auditing, readiness planning, curriculum alignment, and custom simulation design.</p>
-                <a href="consulting.html">Request Advisory →</a>
-            </div>
-        </div>
+    <div class="section-label">
+        Operational Pillars
     </div>
+
+    <h2 class="section-title">
+        The Simulation Ecosystem
+    </h2>
+
+    <div class="grid">
+
+        <div class="card">
+            <div class="card-tag">Caelaria Escapes</div>
+            <h3>Gamified Compliance Realities</h3>
+            <p>
+                High-pressure decision environments that test regulatory understanding, reporting requirements, and crisis response readiness.
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="card-tag">Caelaria Labs</div>
+            <h3>Adaptive Technical Sandboxes</h3>
+            <p>
+                Cloud-first technical environments for cybersecurity, systems administration, AI experimentation, and defensive operations.
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="card-tag">Caelaria Advisory</div>
+            <h3>Institutional Strategy</h3>
+            <p>
+                Readiness assessments, framework development, custom simulation design, and strategic advisory services.
+            </p>
+        </div>
+
+    </div>
+
+</div>
+```
+
 </section>
 
 <section>
-    <div class="container">
-        <div class="eyebrow">Readiness Lifecycle</div>
-        <h2>Assess. Simulate. Validate. Prepare. Respond.</h2>
-        <p class="lead">
-            Caelaria helps organizations move from awareness to action through measurable, repeatable readiness cycles.
-        </p>
 
-        <div class="lifecycle">
-            <div class="step">Assess</div>
-            <div class="step">Simulate</div>
-            <div class="step">Validate</div>
-            <div class="step">Prepare</div>
-            <div class="step">Respond</div>
-        </div>
+```
+<div class="container">
 
-        <div class="console">
-            <div><span class="prompt">caelaria://</span> initializing institutional readiness environment...</div>
-            <div><span class="prompt">status:</span> scenario matrix loaded</div>
-            <div><span class="prompt">modules:</span> compliance | cyber | AI | incident response</div>
-            <div><span class="prompt">objective:</span> convert policy knowledge into operational muscle memory</div>
-        </div>
+    <div class="section-label">
+        Readiness Lifecycle
     </div>
-</section>
 
-</main>
+    <h2 class="section-title">
+        Assess. Simulate. Validate. Prepare. Respond.
+    </h2>
+
+    <div class="lifecycle">
+
+        <div class="step">Assess</div>
+        <div class="step">Simulate</div>
+        <div class="step">Validate</div>
+        <div class="step">Prepare</div>
+        <div class="step">Respond</div>
+
+    </div>
+
+</div>
+```
+
+</section>
 
 <footer>
-    © 2026 CAELARIA · INTELLIGENCE THROUGH SIMULATION · REAL-WORLD READINESS
+    © 2026 CAELARIA • INTELLIGENCE THROUGH SIMULATION • REAL-WORLD READINESS
 </footer>
 
 </body>
