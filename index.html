@@ -32,7 +32,7 @@
             font-family: 'Segoe UI', sans-serif;
         }
 
-        /* Navigation Header with Logo Integration */
+        /* Navigation Header with Unified PNG Logo Integration */
         header {
             display: flex;
             justify-content: space-between;
@@ -44,24 +44,13 @@
         .logo-area {
             display: flex;
             align-items: center;
-            gap: 1rem;
         }
 
-        .logo-img {
-            height: 45px;
+        /* Displays your single 'caelariagraphics.png' asset at optimal scale */
+        .brand-graphic {
+            height: 45px; 
             width: auto;
             object-fit: contain;
-        }
-
-        /* Fixed Brand Typography to match the mockup style */
-        .logo-text {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.6rem;
-            font-weight: 700;
-            letter-spacing: 0.35rem;
-            text-transform: uppercase;
-            color: var(--text-silver);
-            text-shadow: 0 0 10px rgba(226, 232, 240, 0.2);
         }
 
         nav ul {
@@ -84,7 +73,7 @@
             color: var(--teal-glow);
         }
 
-        /* Hero Splash Section */
+        /* Hero Splash Section (Personalized Branding) */
         .hero {
             text-align: center;
             padding: 9rem 2rem;
@@ -92,7 +81,7 @@
             margin: 0 auto;
         }
 
-        /* Transforming the generic main header into a striking brand title */
+        /* Transforms the main header into the striking brand title */
         .hero h1 {
             font-family: 'Orbitron', sans-serif;
             font-size: 4.5rem;
@@ -237,10 +226,10 @@
 </head>
 <body>
 
+    <!-- Personalised Navigation Header referencing the single asset -->
     <header>
         <div class="logo-area">
-            <img src="logo.svg" alt="Caelaria Logo" class="logo-img">
-            <span class="logo-text">Caelaria</span>
+            <img src="caelariagraphics.png" alt="Caelaria Branding" class="brand-graphic">
         </div>
         <nav>
             <ul>
@@ -253,12 +242,14 @@
         </nav>
     </header>
 
+    <!-- Master Hero Presentation -->
     <section class="hero">
         <h1>Caelaria</h1>
         <p>Next-Generation Simulations. Real-World Readiness.</p>
         <button class="cta-btn" onclick="window.location.href='escapes.html'">Initialize Environments</button>
     </section>
 
+    <!-- Simulation Functional Matrix -->
     <section class="container">
         <h2 class="section-title">The Simulation Ecosystem</h2>
         <div class="grid">
