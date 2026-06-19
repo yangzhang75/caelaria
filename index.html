@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -11,7 +10,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
-
 :root{
     --bg:#12161a;
     --bg-card:#1a1f26;
@@ -21,15 +19,9 @@
     --line:rgba(148,163,184,.12);
 }
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
+*{margin:0;padding:0;box-sizing:border-box;}
 
-html{
-    scroll-behavior:smooth;
-}
+html{scroll-behavior:smooth;}
 
 body{
     background:
@@ -109,7 +101,7 @@ nav a:hover{
 }
 
 .hero-full-image{
-    width:min(1100px,92vw);
+    width:min(1200px,94vw);
     height:auto;
     display:block;
 }
@@ -185,6 +177,51 @@ section{
     line-height:1.9;
 }
 
+.mission{
+    padding:7rem 2rem;
+}
+
+.mission-statement{
+    font-family:'Orbitron',sans-serif;
+    font-size:clamp(1.4rem,2vw,2rem);
+    color:var(--silver);
+    margin-bottom:2rem;
+    letter-spacing:.05rem;
+}
+
+.mission-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:1.5rem;
+    margin-top:4rem;
+}
+
+.mission-item{
+    background:rgba(26,31,38,.5);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:1.5rem;
+    transition:.3s ease;
+}
+
+.mission-item:hover{
+    border-color:rgba(14,165,233,.4);
+    transform:translateY(-4px);
+}
+
+.mission-item span{
+    display:block;
+    color:var(--teal);
+    font-family:'Orbitron',sans-serif;
+    letter-spacing:.15rem;
+    margin-bottom:1rem;
+}
+
+.mission-item p{
+    color:var(--muted);
+    line-height:1.7;
+}
+
 .grid{
     display:grid;
     grid-template-columns:repeat(3,1fr);
@@ -221,6 +258,19 @@ section{
 .card p{
     color:var(--muted);
     line-height:1.8;
+    margin-bottom:1.5rem;
+}
+
+.card a{
+    color:var(--silver);
+    font-family:'Orbitron',sans-serif;
+    font-size:.75rem;
+    text-decoration:none;
+    letter-spacing:.12rem;
+}
+
+.card a:hover{
+    color:var(--teal);
 }
 
 .lifecycle{
@@ -240,6 +290,20 @@ section{
     background:rgba(26,31,38,.5);
 }
 
+.console{
+    margin-top:3rem;
+    background:#070b0f;
+    border:1px solid rgba(14,165,233,.28);
+    border-radius:14px;
+    padding:1.5rem;
+    box-shadow:0 0 40px rgba(14,165,233,.08);
+    font-family:"Courier New",monospace;
+    color:#9fdcff;
+    line-height:1.8;
+}
+
+.prompt{color:var(--teal);}
+
 footer{
     border-top:1px solid var(--line);
     text-align:center;
@@ -251,7 +315,6 @@ footer{
 }
 
 @media(max-width:900px){
-
     header{
         flex-direction:column;
         gap:1rem;
@@ -263,10 +326,8 @@ footer{
         gap:1rem;
     }
 
-    .grid{
-        grid-template-columns:1fr;
-    }
-
+    .grid,
+    .mission-grid,
     .lifecycle{
         grid-template-columns:1fr;
     }
@@ -276,147 +337,132 @@ footer{
         padding-top:4rem;
     }
 }
-
 </style>
-
 </head>
 
 <body>
 
 <header>
+    <div class="logo-area">
+        <img src="logo.png" alt="Caelaria Logo">
+    </div>
 
-```
-<div class="logo-area">
-    <img src="logo.png" alt="Caelaria Logo">
-</div>
-
-<nav>
-    <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="escapes.html">Escapes</a></li>
-        <li><a href="labs.html">Labs</a></li>
-        <li><a href="consulting.html">Consulting</a></li>
-        <li><a href="framework.html">Framework</a></li>
-    </ul>
-</nav>
-```
-
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="escapes.html">Escapes</a></li>
+            <li><a href="labs.html">Labs</a></li>
+            <li><a href="consulting.html">Consulting</a></li>
+            <li><a href="framework.html">Framework</a></li>
+        </ul>
+    </nav>
 </header>
 
 <section class="hero">
+    <div class="hero-image-container">
+        <img src="fullimage.png" alt="Caelaria" class="hero-full-image">
+    </div>
 
-```
-<div class="hero-image-container">
-    <img src="fullimage.png" alt="Caelaria" class="hero-full-image">
-</div>
+    <div class="cta-row">
+        <a href="escapes.html" class="btn btn-primary">Initialize Environments</a>
+        <a href="framework.html" class="btn btn-secondary">View Framework</a>
+    </div>
+</section>
 
-<div class="cta-row">
-    <a href="escapes.html" class="btn btn-primary">
-        Initialize Environments
-    </a>
+<section class="mission">
+    <div class="container">
+        <div class="section-label">Why Caelaria</div>
 
-    <a href="framework.html" class="btn btn-secondary">
-        View Framework
-    </a>
-</div>
-```
+        <h2 class="section-title">From Compliance To Readiness</h2>
 
+        <p class="mission-statement">
+            Most organizations train for compliance. Few train for crisis.
+        </p>
+
+        <p class="section-text">
+            Caelaria transforms static policies, awareness training, and compliance requirements into immersive simulation environments that build operational confidence before real-world incidents occur.
+        </p>
+
+        <div class="mission-grid">
+            <div class="mission-item">
+                <span>Assess</span>
+                <p>Identify operational gaps and readiness risks.</p>
+            </div>
+
+            <div class="mission-item">
+                <span>Simulate</span>
+                <p>Practice realistic scenarios in controlled environments.</p>
+            </div>
+
+            <div class="mission-item">
+                <span>Validate</span>
+                <p>Measure response effectiveness and decision quality.</p>
+            </div>
+
+            <div class="mission-item">
+                <span>Prepare</span>
+                <p>Strengthen institutional resilience and confidence.</p>
+            </div>
+        </div>
+    </div>
 </section>
 
 <section>
+    <div class="container">
+        <div class="section-label">Operational Pillars</div>
 
-```
-<div class="container">
+        <h2 class="section-title">The Simulation Ecosystem</h2>
 
-    <div class="section-label">
-        Mission Architecture
+        <div class="grid">
+            <div class="card">
+                <div class="card-tag">Caelaria Escapes</div>
+                <h3>Gamified Compliance Realities</h3>
+                <p>High-pressure decision environments that test regulatory understanding, reporting requirements, and crisis response readiness.</p>
+                <a href="escapes.html">View Escapes →</a>
+            </div>
+
+            <div class="card">
+                <div class="card-tag">Caelaria Labs</div>
+                <h3>Adaptive Technical Sandboxes</h3>
+                <p>Cloud-first technical environments for cybersecurity, systems administration, AI experimentation, and defensive operations.</p>
+                <a href="labs.html">Access Labs →</a>
+            </div>
+
+            <div class="card">
+                <div class="card-tag">Caelaria Advisory</div>
+                <h3>Institutional Strategy</h3>
+                <p>Readiness assessments, framework development, custom simulation design, and strategic advisory services.</p>
+                <a href="consulting.html">Request Advisory →</a>
+            </div>
+        </div>
     </div>
-
-    <h2 class="section-title">
-        From Compliance To Readiness
-    </h2>
-
-    <p class="section-text">
-        Caelaria transforms static training, compliance reviews, and traditional awareness programs into immersive simulation environments that build operational confidence, institutional resilience, and measurable readiness before real-world incidents occur.
-    </p>
-
-</div>
-```
-
 </section>
 
 <section>
+    <div class="container">
+        <div class="section-label">Readiness Lifecycle</div>
 
-```
-<div class="container">
+        <h2 class="section-title">Assess. Simulate. Validate. Prepare. Respond.</h2>
 
-    <div class="section-label">
-        Operational Pillars
-    </div>
+        <p class="section-text">
+            Caelaria helps organizations move from awareness to action through measurable, repeatable readiness cycles.
+        </p>
 
-    <h2 class="section-title">
-        The Simulation Ecosystem
-    </h2>
-
-    <div class="grid">
-
-        <div class="card">
-            <div class="card-tag">Caelaria Escapes</div>
-            <h3>Gamified Compliance Realities</h3>
-            <p>
-                High-pressure decision environments that test regulatory understanding, reporting requirements, and crisis response readiness.
-            </p>
+        <div class="lifecycle">
+            <div class="step">Assess</div>
+            <div class="step">Simulate</div>
+            <div class="step">Validate</div>
+            <div class="step">Prepare</div>
+            <div class="step">Respond</div>
         </div>
 
-        <div class="card">
-            <div class="card-tag">Caelaria Labs</div>
-            <h3>Adaptive Technical Sandboxes</h3>
-            <p>
-                Cloud-first technical environments for cybersecurity, systems administration, AI experimentation, and defensive operations.
-            </p>
+        <div class="console">
+            <div><span class="prompt">caelaria://</span> initializing institutional readiness environment...</div>
+            <div><span class="prompt">status:</span> scenario matrix loaded</div>
+            <div><span class="prompt">modules:</span> compliance | cyber | AI | incident response</div>
+            <div><span class="prompt">objective:</span> convert policy knowledge into operational muscle memory</div>
         </div>
-
-        <div class="card">
-            <div class="card-tag">Caelaria Advisory</div>
-            <h3>Institutional Strategy</h3>
-            <p>
-                Readiness assessments, framework development, custom simulation design, and strategic advisory services.
-            </p>
-        </div>
-
     </div>
-
-</div>
-```
-
-</section>
-
-<section>
-
-```
-<div class="container">
-
-    <div class="section-label">
-        Readiness Lifecycle
-    </div>
-
-    <h2 class="section-title">
-        Assess. Simulate. Validate. Prepare. Respond.
-    </h2>
-
-    <div class="lifecycle">
-
-        <div class="step">Assess</div>
-        <div class="step">Simulate</div>
-        <div class="step">Validate</div>
-        <div class="step">Prepare</div>
-        <div class="step">Respond</div>
-
-    </div>
-
-</div>
-```
-
 </section>
 
 <footer>
