@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caelaria Labs | Incident Response Sandbox v1.0</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --bg-dark: #12161a;
+            --bg-card: #1a1f26;
+            --text-silver: #e2e8f0;
+            --text-muted: #94a3b8;
+            --teal-glow: #0ea5e9;
+            --teal-dark: #0369a1;
+            --terminal-green: #22c55e;
+            --alert-red: #ef4444;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-silver);
+            padding: 2rem;
+        }
+
+        .dashboard {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: var(--bg-card);
+            border: 1px solid rgba(14, 165, 233, 0.2);
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+            padding-bottom: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 0.2rem;
+            color: var(--text-silver);
+            text-transform: uppercase;
+        }
+
+        .logo span { color: var(--teal-glow); }
+
+        .status-badge {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--alert-red);
+            padding: 0.4rem 1rem;
+            border-radius: 4px;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05rem;
+            font-weight: 600;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        /* Console Component */
+        .console-panel {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .console-header {
+            background-color: #0b0f12;
+            padding: 0.75rem 1rem;
+            border-top-left-radius: 6px;
+            border-top-right-radius: 6px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1rem;
+            color: var(--text-muted);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            border-bottom: none;
+        }
+
+        .terminal {
+            background-color: #050709;
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            height: 400px;
+            padding: 1rem;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            overflow-y: auto;
+            border-bottom-left-radius: 6px;
+            border-bottom-right-radius: 6px;
+            color: var(--text-muted);
+        }
+
+        .log-entry { margin-bottom: 0.4rem; }
+        .log-attack { color: var(--alert-red); }
+        .log-normal { color: var(--terminal-green); }
+
+        /* Control Form Component */
+        .control-panel {
+            background-color: rgba(26, 31, 38, 0.5);
+            border: 1px solid rgba(148, 163, 184, 0.05);
+            border-radius: 6px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .instruction h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.75rem;
+            color: var(--teal-glow);
+        }
+
+        .instruction p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        label {
+            display: block;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-silver);
+        }
+
+        input[type="text"] {
+            width: 100%;
+            background-color: #0b0f12;
+            border: 1px solid rgba(14, 165, 233, 0.2);
+            padding: 0.75rem;
+            color: var(--text-silver);
+            border-radius: 4px;
+            font-family: monospace;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--teal-glow);
+        }
+
+        .action-btn {
+            background-color: transparent;
+            color: var(--teal-glow);
+            border: 1px solid var(--teal-glow);
+            width: 100%;
+            padding: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .action-btn:hover {
+            background-color: var(--teal-glow);
+            color: var(--bg-dark);
+            box-shadow: 0 0 15px rgba(14, 165, 233, 0.3);
+        }
+
+        /* Success Overlay modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(18, 22, 26, 0.9);
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .modal-content {
+            background-color: var(--bg-card);
+            border: 1px solid var(--terminal-green);
+            max-width: 500px;
+            width: 100%;
+            padding: 2.5rem;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 0 35px rgba(34, 197, 94, 0.2);
+        }
+
+        .modal-content h2 {
+            color: var(--terminal-green);
+            text-transform: uppercase;
+            letter-spacing: 0.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .portfolio-box {
+            background-color: #050709;
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            padding: 1rem;
+            text-align: left;
+            font-family: monospace;
+            font-size: 0.85rem;
+            margin: 1.5rem 0;
+            color: var(--text-muted);
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard">
+        <header>
+            <div class="logo">Caelaria<span>.Labs</span></div>
+            <div class="status-badge" id="statusIndicator">Threat Detected: Credential Stuffing</div>
+        </header>
+
+        <div class="layout">
+            <!-- Left Side: Interactive Stream Console -->
+            <div class="console-panel">
+                <div class="console-header">Live Access Log Stream — Interface eth0</div>
+                <div class="terminal" id="logTerminal"></div>
+            </div>
+
+            <!-- Right Side: Threat Mitigator Form Input -->
+            <div class="control-panel">
+                <div class="instruction">
+                    <h3>Incident Mitigation</h3>
+                    <p>An automated brute force script is attempting to breach the authentication portal.</p>
+                    <p><strong>Instructions:</strong> Analyze the log traffic stream. Identify the repeating malicious source IP range or specific subnet prefix, and deploy an exact infrastructure firewall block rule below.</p>
+                </div>
+
+                <div id="mitigationForm">
+                    <div class="form-group">
+                        <label>Target IP Target or Subnet Block</label>
+                        <input type="text" id="targetInput" placeholder="e.g., 192.168.1.0/24 or 10.0.0.45" autocomplete="off">
+                    </div>
+                    <button class="action-btn" onclick="evaluateRule()">Deploy Firewall Policy</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Competency Artifact Generation Popup -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <h2>Threat Neutralized</h2>
+            <p style="color: var(--text-muted); margin-top: 0.5rem;">The firewall rule successfully isolated the botnet structure and preserved gateway authentication access.</p>
+            
+            <div class="portfolio-box">
+                <span style="color: var(--teal-glow);">[Caelaria.Artifact.Verified]</span><br>
+                Candidate: hush1e<br>
+                Competency: L1 Incident Response<br>
+                Mitigation Vector: Subnet Block (Pattern Match)<br>
+                Timestamp: 2026-06-19 Z
+            </div>
+
+            <button class="action-btn" style="border-color: var(--terminal-green); color: var(--terminal-green);" onclick="window.location.reload();">Reset Simulation</button>
+        </div>
+    </div>
+
+    <script>
+        const terminal = document.getElementById('logTerminal');
+        const normalIPs = ['64.233.160.12', '8.8.8.8', '172.217.7.14', '204.79.197.200', '13.107.21.200'];
+        const attackUsers = ['admin', 'root', 'guest', 'user1', 'supervisor', 'db_admin', 'testuser'];
+
+        // Generate dynamic mock network packet data stream
+        function generateLogs() {
+            setInterval(() => {
+                const isAttack = Math.random() > 0.4;
+                const log = document.createElement('div');
+                log.classList.add('log-entry');
+
+                const timestamp = new Date().toISOString().slice(11, 19);
+
+                if (isAttack) {
+                    // Attacker malicious signature block: 185.220.101.X
+                    const randomHost = Math.floor(Math.random() * 254) + 1;
+                    const attackerIP = `185.220.101.${randomHost}`;
+                    const targetUser = attackUsers[Math.floor(Math.random() * attackUsers.length)];
+                    
+                    log.classList.add('log-attack');
+                    log.innerHTML = `[${timestamp}] WARN: Failed auth attempt for user "${targetUser}" from SRC_IP: ${attackerIP} - POST /api/v1/auth/login [HTTP 401]`;
+                } else {
+                    const cleanIP = normalIPs[Math.floor(Math.random() * normalIPs.length)];
+                    log.classList.add('log-normal');
+                    log.innerHTML = `[${timestamp}] INFO: Successful connection established from SRC_IP: ${cleanIP} - GET /dashboard/index.html [HTTP 200]`;
+                }
+
+                terminal.appendChild(log);
+                terminal.scrollTop = terminal.scrollHeight;
+
+                // Prune log overflow out of terminal window to preserve local thread execution memory
+                if (terminal.childNodes.length > 40) {
+                    terminal.removeChild(terminal.firstChild);
+                }
+            }, 450);
+        }
+
+        // Check if the student accurately found the malicious signature range
+        function evaluateRule() {
+            const userInput = document.getElementById('targetInput').value.trim();
+            
+            // Accept variations of the 185.220.101.x malicious network range
+            const winConditions = [
+                "185.220.101.0/24",
+                "185.220.101.0",
+                "185.220.101.*",
+                "185.220.101"
+            ];
+
+            if (winConditions.includes(userInput)) {
+                document.getElementById('statusIndicator').style.borderColor = "var(--terminal-green)";
+                document.getElementById('statusIndicator').style.color = "var(--terminal-green)";
+                document.getElementById('statusIndicator').innerText = "Status: Nominal. Rule Active.";
+                document.getElementById('successModal').style.display = 'flex';
+            } else {
+                alert("DEPLOYMENT ERROR: Firewall rule failed to mitigate the attack signature. Monitor traffic logs closely for repeating patterns.");
+            }
+        }
+
+        window.onload = generateLogs;
+    </script>
+</body>
+</html>
