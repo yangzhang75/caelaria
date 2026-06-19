@@ -76,26 +76,25 @@
         /* Hero Splash Section */
         .hero {
             text-align: center;
-            padding: 6rem 2rem 5rem 2rem;
-            max-width: 1200px; /* Opened up to allow the graphic to spread wide */
+            padding: 8rem 1rem 6rem 1rem;
+            width: 100%;
             margin: 0 auto;
         }
 
-        /* Master Fix: Spans wide across the page layout but limits vertical bloat */
+        /* Wide Container optimized for name.png */
         .wide-graphic-container {
             width: 100%;
-            max-width: 960px; /* Forces the centerpiece to span wide across the page */
-            height: 240px;    /* Strictly caps the height so it doesn't get tall */
-            margin: 0 auto 4rem auto;
+            max-width: 750px; /* Controls how wide the text graphic stretches across the page */
+            margin: 0 auto 4.5rem auto;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
         .wide-graphic-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain; /* Retains clean, crisp proportions inside the wide frame */
+            width: 100% !important;
+            height: auto !important; /* Lets the height naturally follow the wide text proportions */
+            object-fit: contain;
         }
 
         .cta-btn {
@@ -215,16 +214,15 @@
 
         @media (max-width: 768px) {
             header { padding: 2rem; flex-direction: column; gap: 1.5rem; }
-            .wide-graphic-container { height: 140px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Top Navigation Header -->
+    <!-- Header Navigation Section -->
     <header>
         <div class="logo-area">
-            <img src="logo.png?v=7" alt="Caelaria Icon" class="logo-img">
+            <img src="logo.png?v=9" alt="Caelaria Icon" class="logo-img">
         </div>
         <nav>
             <ul>
@@ -237,17 +235,17 @@
         </nav>
     </header>
 
-    <!-- Main Section with Forced Wide Layout Boundaries -->
+    <!-- Main Hero presenting name.png centrally -->
     <section class="hero">
         <div class="wide-graphic-container">
-            <img src="caelariagraphics.png?v=7" alt="Caelaria - Next-Generation Simulations">
+            <img src="name.png?v=9" alt="Caelaria - Next-Generation Simulations">
         </div>
         <div>
             <button class="cta-btn" onclick="window.location.href='escapes.html'">Initialize Environments</button>
         </div>
     </section>
 
-    <!-- System Content Cards -->
+    <!-- Core Services Grid -->
     <section class="container">
         <h2 class="section-title">The Simulation Ecosystem</h2>
         <div class="grid">
