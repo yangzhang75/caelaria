@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Caelaria Consulting | AI Agents, Automation & Readiness</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+    --bg:#12161a;
+    --bg-card:#1a1f26;
+    --silver:#e2e8f0;
+    --muted:#94a3b8;
+    --teal:#0ea5e9;
+    --line:rgba(148,163,184,.13);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+html{scroll-behavior:smooth;}
+
+body{
+    background:
+        radial-gradient(circle at top center, rgba(14,165,233,.13), transparent 38%),
+        linear-gradient(180deg,#0b1016,#12161a 48%,#0b1016);
+    color:var(--silver);
+    font-family:'Inter',sans-serif;
+    overflow-x:hidden;
+}
+
+body::before{
+    content:'';
+    position:fixed;
+    inset:0;
+    background-image:
+        linear-gradient(rgba(14,165,233,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(14,165,233,.025) 1px, transparent 1px);
+    background-size:64px 64px;
+    pointer-events:none;
+    z-index:-1;
+}
+
+header{
+    position:sticky;
+    top:0;
+    z-index:999;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:1rem 2rem;
+    border-bottom:1px solid var(--line);
+    backdrop-filter:blur(12px);
+    background:rgba(8,13,18,.82);
+}
+
+.logo-area img{
+    height:42px;
+    width:auto;
+    display:block;
+}
+
+nav ul{
+    display:flex;
+    list-style:none;
+    gap:1.8rem;
+}
+
+nav a{
+    text-decoration:none;
+    color:var(--muted);
+    font-family:'Orbitron',sans-serif;
+    font-size:.72rem;
+    letter-spacing:.15rem;
+    text-transform:uppercase;
+    transition:.3s ease;
+}
+
+nav a:hover,
+nav a.active{
+    color:var(--teal);
+    text-shadow:0 0 12px rgba(14,165,233,.6);
+}
+
+section{
+    padding:6rem 2rem;
+}
+
+.container{
+    max-width:1200px;
+    margin:auto;
+}
+
+.page-hero{
+    min-height:58vh;
+    display:flex;
+    align-items:center;
+    text-align:center;
+    padding:7rem 2rem 5rem;
+}
+
+.page-hero .container{
+    max-width:980px;
+}
+
+.section-label{
+    color:var(--teal);
+    font-family:'Orbitron',sans-serif;
+    text-transform:uppercase;
+    letter-spacing:.22rem;
+    font-size:.7rem;
+    margin-bottom:1rem;
+}
+
+h1,h2,h3{
+    font-family:'Orbitron',sans-serif;
+    text-transform:uppercase;
+}
+
+h1{
+    font-size:clamp(2.2rem,6vw,5rem);
+    letter-spacing:.16rem;
+    margin-bottom:1.4rem;
+}
+
+h2{
+    font-size:clamp(1.5rem,4vw,2.6rem);
+    margin-bottom:1.25rem;
+    line-height:1.25;
+}
+
+.lead,
+.section-text{
+    color:var(--muted);
+    line-height:1.9;
+    font-size:1rem;
+}
+
+.lead{
+    max-width:850px;
+    margin:0 auto;
+    font-size:1.08rem;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:1.5rem;
+    margin-top:3rem;
+}
+
+.card{
+    background:
+        radial-gradient(circle at top right, rgba(14,165,233,.08), transparent 34%),
+        linear-gradient(180deg,#1a1f26,#10151b);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:2rem;
+    transition:.3s ease;
+    min-height:310px;
+}
+
+.card:hover{
+    transform:translateY(-7px);
+    border-color:rgba(14,165,233,.45);
+    box-shadow:0 0 28px rgba(14,165,233,.08);
+}
+
+.card-tag{
+    font-family:'Orbitron',sans-serif;
+    color:var(--teal);
+    font-size:.68rem;
+    letter-spacing:.16rem;
+    text-transform:uppercase;
+}
+
+.card h3{
+    margin:1rem 0;
+    font-size:1.05rem;
+    line-height:1.35;
+}
+
+.card p{
+    color:var(--muted);
+    line-height:1.8;
+}
+
+.band{
+    background:
+        linear-gradient(90deg, transparent, rgba(14,165,233,.11), transparent);
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+}
+
+.service-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:1.5rem;
+    margin-top:3rem;
+}
+
+.service{
+    background:rgba(26,31,38,.52);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:2rem;
+}
+
+.service h3{
+    font-family:'Orbitron',sans-serif;
+    text-transform:uppercase;
+    font-size:1rem;
+    margin-bottom:1rem;
+}
+
+.service ul{
+    list-style:none;
+}
+
+.service li{
+    color:var(--muted);
+    line-height:1.9;
+    border-bottom:1px solid rgba(148,163,184,.07);
+    padding:.45rem 0;
+}
+
+.service li::before{
+    content:'// ';
+    color:var(--teal);
+}
+
+.process{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:1rem;
+    margin-top:3rem;
+}
+
+.step{
+    text-align:center;
+    padding:1.2rem;
+    border:1px solid var(--line);
+    border-radius:10px;
+    font-family:'Orbitron',sans-serif;
+    letter-spacing:.12rem;
+    background:rgba(26,31,38,.5);
+    text-transform:uppercase;
+    font-size:.72rem;
+}
+
+.cta-box{
+    margin-top:3rem;
+    background:#070b0f;
+    border:1px solid rgba(14,165,233,.25);
+    border-radius:16px;
+    padding:2.4rem;
+    text-align:center;
+    box-shadow:0 0 40px rgba(14,165,233,.06);
+}
+
+.cta-box p{
+    color:var(--muted);
+    line-height:1.85;
+    max-width:780px;
+    margin:0 auto 1.8rem;
+}
+
+.btn{
+    display:inline-block;
+    font-family:'Orbitron',sans-serif;
+    text-transform:uppercase;
+    letter-spacing:.15rem;
+    text-decoration:none;
+    padding:1rem 2rem;
+    border-radius:6px;
+    transition:.3s ease;
+    font-size:.74rem;
+}
+
+.btn-primary{
+    color:var(--teal);
+    border:1px solid var(--teal);
+    box-shadow:0 0 20px rgba(14,165,233,.12);
+}
+
+.btn-primary:hover{
+    background:var(--teal);
+    color:#071015;
+    box-shadow:0 0 30px rgba(14,165,233,.45);
+}
+
+footer{
+    border-top:1px solid var(--line);
+    text-align:center;
+    padding:3rem 1rem;
+    color:var(--muted);
+    font-family:'Orbitron',sans-serif;
+    font-size:.72rem;
+    letter-spacing:.12rem;
+}
+
+@media(max-width:950px){
+    header{
+        flex-direction:column;
+        gap:1rem;
+    }
+
+    nav ul{
+        flex-wrap:wrap;
+        justify-content:center;
+        gap:1rem;
+    }
+
+    .grid,
+    .service-grid,
+    .process{
+        grid-template-columns:1fr;
+    }
+
+    .page-hero{
+        min-height:auto;
+        padding-top:5rem;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo-area">
+        <a href="index.html">
+            <img src="logo.png" alt="Caelaria Logo">
+        </a>
+    </div>
+
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="escapes.html">Escapes</a></li>
+            <li><a href="labs.html">Labs</a></li>
+            <li><a href="orders.html">Orders</a></li>
+            <li><a href="consulting.html" class="active">Consulting</a></li>
+            <li><a href="framework.html">Framework</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+
+<section class="page-hero">
+    <div class="container">
+        <div class="section-label">Caelaria Consulting</div>
+        <h1>AI Agents. Automation. Cyber & AI Readiness.</h1>
+        <p class="lead">
+            Strategic support for organizations that want to train smarter, automate workflows, adopt AI responsibly, improve cyber readiness, and build custom intelligent systems.
+        </p>
+    </div>
+</section>
+
+<section>
+    <div class="container">
+        <div class="section-label">Consulting Focus</div>
+        <h2>Custom Support For Modern Digital Operations.</h2>
+        <p class="section-text">
+            Caelaria Consulting helps organizations identify needs, design solutions, and implement practical cyber, AI, automation, training, and readiness improvements.
+        </p>
+
+        <div class="grid">
+            <div class="card">
+                <div class="card-tag">AI Agents</div>
+                <h3>Custom Intelligent Assistants</h3>
+                <p>
+                    Build purpose-driven AI agents for knowledge bases, student support, help desks, policy navigation, internal procedures, reporting, training, or executive briefings.
+                </p>
+            </div>
+
+            <div class="card">
+                <div class="card-tag">Automation</div>
+                <h3>Workflow Optimization</h3>
+                <p>
+                    Streamline repetitive tasks, intake processes, document handling, reporting workflows, and operational handoffs with practical automation design.
+                </p>
+            </div>
+
+            <div class="card">
+                <div class="card-tag">Readiness</div>
+                <h3>Cyber & AI Strategy</h3>
+                <p>
+                    Develop training plans, AI adoption roadmaps, governance practices, cybersecurity readiness improvements, and organization-specific implementation support.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="band">
+    <div class="container">
+        <div class="section-label">Consulting Services</div>
+        <h2>From Idea To Operational Deployment.</h2>
+        <p class="section-text">
+            Consulting engagements can be scoped as quick-start advisory sessions, custom builds, training packages, automation projects, or ongoing strategic support.
+        </p>
+
+        <div class="service-grid">
+            <div class="service">
+                <h3>Custom AI Agents</h3>
+                <ul>
+                    <li>Knowledge-base agents</li>
+                    <li>Policy and procedure assistants</li>
+                    <li>Student, employee, or customer support agents</li>
+                    <li>Executive briefing assistants</li>
+                    <li>Department-specific AI copilots</li>
+                </ul>
+            </div>
+
+            <div class="service">
+                <h3>Workflow Automation</h3>
+                <ul>
+                    <li>Document and reporting automation</li>
+                    <li>AI-assisted intake workflows</li>
+                    <li>Task routing and process redesign</li>
+                    <li>Data collection and summary workflows</li>
+                    <li>Operational efficiency planning</li>
+                </ul>
+            </div>
+
+            <div class="service">
+                <h3>Cyber & AI Advisory</h3>
+                <ul>
+                    <li>AI governance and acceptable-use guidance</li>
+                    <li>Cybersecurity readiness reviews</li>
+                    <li>AI adoption and workforce training plans</li>
+                    <li>Incident response and preparedness support</li>
+                    <li>HB96/HB99 and compliance alignment where needed</li>
+                </ul>
+            </div>
+
+            <div class="service">
+                <h3>Custom Training Design</h3>
+                <ul>
+                    <li>Custom cyber and AI simulations</li>
+                    <li>Gamified learning experiences</li>
+                    <li>Role-based training pathways</li>
+                    <li>Technical lab design</li>
+                    <li>Assessment and readiness measurement</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="container">
+        <div class="section-label">Engagement Process</div>
+        <h2>Assess. Design. Build. Test. Deploy.</h2>
+        <p class="section-text">
+            Each consulting project begins with a practical discovery process so the solution matches your audience, workflows, systems, policies, and readiness goals.
+        </p>
+
+        <div class="process">
+            <div class="step">Assess</div>
+            <div class="step">Design</div>
+            <div class="step">Build</div>
+            <div class="step">Test</div>
+            <div class="step">Deploy</div>
+        </div>
+
+        <div class="cta-box">
+            <h3>Ready To Scope A Custom Project?</h3>
+            <p>
+                Request support for a custom AI agent, automation workflow, cyber or AI training experience, consulting engagement, or readiness strategy.
+            </p>
+            <a href="orders.html" class="btn btn-primary">Initialize Custom Project</a>
+        </div>
+    </div>
+</section>
+
+</main>
+
+<footer>
+    © 2026 CAELARIA • AI AGENTS • AUTOMATION • CYBER • READINESS
+</footer>
+
+</body>
+</html>
