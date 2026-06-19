@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Caelaria | Next-Generation Simulations & Institutional Security</title>
-    <!-- Import Orbitron for the navigation elements -->
+    <!-- Import Orbitron for the high-end aerospace/cyber interface typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Segoe+UI:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Segoe+UI:wght@300;400;600&display=swap" rel="stylesheet">
     
     <style>
         * {
@@ -32,7 +32,7 @@
             font-family: 'Segoe UI', sans-serif;
         }
 
-        /* Navigation Header Customization */
+        /* Navigation Header */
         header {
             display: flex;
             justify-content: space-between;
@@ -46,7 +46,7 @@
             align-items: center;
         }
 
-        /* Top-left icon formatting */
+        /* Top-left compact header icon */
         .logo-img {
             height: 45px; 
             width: auto;
@@ -73,21 +73,12 @@
             color: var(--teal-glow);
         }
 
-        /* Center Hero Section Formatting */
+        /* Balanced Hero Presentation Area */
         .hero {
             text-align: center;
-            padding: 7rem 2rem 5rem 2rem;
+            padding: 6rem 2rem 5rem 2rem;
             max-width: 900px;
             margin: 0 auto;
-        }
-
-        /* Style for the full unified graphic in the circled center zone */
-        .center-brand-graphic {
-            max-width: 100%;
-            height: auto;
-            max-height: 180px; /* Limits size to match your design proportions */
-            object-fit: contain;
-            margin-bottom: 3.5rem;
         }
 
         .cta-btn {
@@ -207,6 +198,7 @@
 
         @media (max-width: 768px) {
             header { padding: 2rem; flex-direction: column; gap: 1.5rem; }
+            .hero h1 { font-size: 3rem; letter-spacing: 0.3rem; }
         }
     </style>
 </head>
@@ -215,7 +207,7 @@
     <!-- Header containing ONLY logo.png in the top left area -->
     <header>
         <div class="logo-area">
-            <img src="logo.png" alt="Caelaria Icon" class="logo-img">
+            <img src="logo.png?v=5" alt="Caelaria Icon" class="logo-img">
         </div>
         <nav>
             <ul>
@@ -228,13 +220,21 @@
         </nav>
     </header>
 
-<!-- Main Hero containing the expanded centerpiece graphic -->
+    <!-- Main Hero using standalone elements for precise height control -->
     <section class="hero">
-        <img src="caelariagraphics.png?v=4" alt="Caelaria - Next-Generation Simulations" style="width: 850px !important; max-height: 220px !important; object-fit: contain; display: block; margin: 0 auto 3rem auto;">            <button class="cta-btn" onclick="window.location.href='escapes.html'">Initialize Environments</button>
+        <!-- Center Emblem -->
+        <img src="logo.png?v=5" alt="Caelaria Center Emblem" style="height: 120px !important; width: auto !important; display: block; margin: 0 auto 1.5rem auto; filter: drop-shadow(0 0 15px rgba(255,255,255,0.05));">
+        
+        <!-- Wide Typography Blueprint -->
+        <h1 style="font-family: 'Orbitron', sans-serif; font-size: 4.5rem; font-weight: 900; letter-spacing: 0.6rem; text-transform: uppercase; margin-bottom: 1rem; color: #e2e8f0; background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Caelaria</h1>
+        <p style="font-family: 'Segoe UI', sans-serif; font-size: 1.1rem; color: #94a3b8; margin-bottom: 3.5rem; letter-spacing: 0.25rem; text-transform: uppercase;">Next-Generation Simulations. Real-World Readiness.</p>
+        
+        <div>
+            <button class="cta-btn" onclick="window.location.href='escapes.html'">Initialize Environments</button>
         </div>
     </section>
 
-    <!-- Simulation Ecosystem Information Matrix -->
+    <!-- Simulation Ecosystem Matrix -->
     <section class="container">
         <h2 class="section-title">The Simulation Ecosystem</h2>
         <div class="grid">
