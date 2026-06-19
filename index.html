@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Caelaria | Next-Generation Simulations & Institutional Security</title>
-    <!-- Import Orbitron for the high-end interface typography -->
+    <!-- Import Orbitron for the navigation interface typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Segoe+UI:wght@300;400;600&display=swap" rel="stylesheet">
@@ -76,25 +76,25 @@
         /* Hero Splash Section */
         .hero {
             text-align: center;
-            padding: 8rem 1rem 6rem 1rem;
+            padding: 7rem 1rem 5rem 1rem;
             width: 100%;
             margin: 0 auto;
         }
 
-        /* Wide Container optimized for name.png */
+        /* The Hard-Locked Framing Container */
         .wide-graphic-container {
             width: 100%;
-            max-width: 750px; /* Controls how wide the text graphic stretches across the page */
-            margin: 0 auto 4.5rem auto;
+            margin: 0 auto 4rem auto;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
+        /* Forces a stretched wide layout while capping vertical growth */
         .wide-graphic-container img {
-            width: 100% !important;
-            height: auto !important; /* Lets the height naturally follow the wide text proportions */
-            object-fit: contain;
+            width: 800px !important;   /* Sets the expansive horizontal layout */
+            height: 180px !important;  /* Strict limit: prevents the icon from getting tall */
+            object-fit: fill;          /* Stretches the asset completely to your custom size dimensions */
         }
 
         .cta-btn {
@@ -214,6 +214,7 @@
 
         @media (max-width: 768px) {
             header { padding: 2rem; flex-direction: column; gap: 1.5rem; }
+            .wide-graphic-container img { width: 100% !important; height: auto !important; object-fit: contain; }
         }
     </style>
 </head>
@@ -222,7 +223,7 @@
     <!-- Header Navigation Section -->
     <header>
         <div class="logo-area">
-            <img src="logo.png?v=9" alt="Caelaria Icon" class="logo-img">
+            <img src="logo.png?v=10" alt="Caelaria Icon" class="logo-img">
         </div>
         <nav>
             <ul>
@@ -235,17 +236,17 @@
         </nav>
     </header>
 
-    <!-- Main Hero presenting name.png centrally -->
+    <!-- Main Hero containing the forced horizontal layout graphic -->
     <section class="hero">
         <div class="wide-graphic-container">
-            <img src="name.png?v=9" alt="Caelaria - Next-Generation Simulations">
+            <img src="caelariagraphics.png?v=10" alt="Caelaria - Next-Generation Simulations">
         </div>
         <div>
             <button class="cta-btn" onclick="window.location.href='escapes.html'">Initialize Environments</button>
         </div>
     </section>
 
-    <!-- Core Services Grid -->
+    <!-- Ecosystem Architecture Grid -->
     <section class="container">
         <h2 class="section-title">The Simulation Ecosystem</h2>
         <div class="grid">
