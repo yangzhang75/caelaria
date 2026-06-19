@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Caelaria | Next-Generation Simulations & Institutional Security</title>
     <style>
-        /* CSS Reset & Palette Configuration */
         * {
             margin: 0;
             padding: 0;
@@ -14,12 +13,11 @@
         }
 
         :root {
-            --bg-dark: #12161a;       /* Deep Charcoal Canvas */
-            --bg-card: #1a1f26;       /* Matte Velvet Panels */
-            --text-silver: #e2e8f0;   /* Starlight Silver Typography */
-            --text-muted: #94a3b8;    /* Soft Muted Gray */
-            --teal-glow: #0ea5e9;     /* Deep Sea Teal Primary Accent */
-            --teal-dark: #0369a1;     /* Shaded Teal for Shifting Gradients */
+            --bg-dark: #12161a;       
+            --bg-card: #1a1f26;       
+            --text-silver: #e2e8f0;   
+            --text-muted: #94a3b8;    
+            --teal-glow: #0ea5e9;     
         }
 
         body {
@@ -29,12 +27,12 @@
             overflow-x: hidden;
         }
 
-        /* Navigation Header */
+        /* Navigation Header with Logo Integration */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 2rem 4rem;
+            padding: 1.5rem 4rem;
             border-bottom: 1px solid rgba(148, 163, 184, 0.1);
         }
 
@@ -44,15 +42,11 @@
             gap: 1rem;
         }
 
-        /* Abstract Glitch/Rift Aesthetic for Logo Text */
-        .logo-text {
-            font-size: 1.8rem;
-            font-weight: 700;
-            letter-spacing: 0.25rem;
-            text-transform: uppercase;
-            background: linear-gradient(90deg, var(--text-silver) 75%, var(--teal-glow) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        /* Pulls your repository image automatically */
+        .logo-img {
+            height: 50px;
+            width: auto;
+            object-fit: contain;
         }
 
         nav ul {
@@ -83,11 +77,10 @@
         }
 
         .hero h1 {
-            font-size: 3rem;
+            font-size: 3.5rem;
             font-weight: 300;
             letter-spacing: 0.05rem;
             margin-bottom: 1.5rem;
-            color: var(--text-silver);
         }
 
         .hero p {
@@ -117,14 +110,12 @@
             box-shadow: 0 0 25px rgba(14, 165, 233, 0.4);
         }
 
-        /* Core Framework Grid Sections */
         .section-title {
             text-align: center;
             text-transform: uppercase;
             letter-spacing: 0.2rem;
             font-size: 1.8rem;
             margin-bottom: 4rem;
-            color: var(--text-silver);
             position: relative;
         }
 
@@ -145,11 +136,10 @@
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1max));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2.5rem;
         }
 
-        /* Panel/Card Styling reflecting the ecosystem architecture */
         .card {
             background-color: var(--bg-card);
             border: 1px solid rgba(148, 163, 184, 0.05);
@@ -175,7 +165,6 @@
         .card h3 {
             font-size: 1.4rem;
             margin-bottom: 1rem;
-            font-weight: 500;
         }
 
         .card p {
@@ -199,56 +188,6 @@
             color: var(--teal-glow);
         }
 
-        /* Institutional Framework Content Layout */
-        .split-layout {
-            display: flex;
-            gap: 4rem;
-            align-items: center;
-        }
-
-        .split-content {
-            flex: 1;
-        }
-
-        .split-content p {
-            color: var(--text-muted);
-            margin-bottom: 1.5rem;
-            font-size: 1.1rem;
-        }
-
-        /* Institutional/Grant Fee Structure Matrix */
-        .fee-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 2rem;
-            background-color: var(--bg-card);
-            border-radius: 6px;
-            overflow: hidden;
-        }
-
-        .fee-table th, .fee-table td {
-            padding: 1.25rem 2rem;
-            text-align: left;
-        }
-
-        .fee-table th {
-            background-color: rgba(14, 165, 233, 0.1);
-            color: var(--text-silver);
-            text-transform: uppercase;
-            font-size: 0.85rem;
-            letter-spacing: 0.1rem;
-        }
-
-        .fee-table tr {
-            border-bottom: 1px solid rgba(148, 163, 184, 0.05);
-        }
-
-        .fee-table td .price {
-            color: var(--teal-glow);
-            font-weight: 600;
-        }
-
-        /* Footer Alignment */
         footer {
             text-align: center;
             padding: 4rem 2rem;
@@ -258,129 +197,63 @@
             letter-spacing: 0.05rem;
         }
 
-        /* Responsive Breakpoint handling */
         @media (max-width: 768px) {
             header { padding: 2rem; flex-direction: column; gap: 1.5rem; }
             .hero h1 { font-size: 2.2rem; }
-            .split-layout { flex-direction: column; gap: 2rem; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Unified Master Navigation -->
     <header>
         <div class="logo-area">
-            <div class="logo-text">Caelaria</div>
+            <img src="watermarked_img_7213738819476798216.png" alt="Caelaria Logo" class="logo-img">
         </div>
         <nav>
             <ul>
-                <li><a href="#ecosystem">Ecosystem</a></li>
-                <li><a href="#consulting">Consulting</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#fees">Institutional Framework</a></li>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="escapes.html">Escapes</a></li>
+                <li><a href="labs.html">Labs</a></li>
+                <li><a href="consulting.html">Consulting</a></li>
+                <li><a href="fees.html">Institutional Framework</a></li>
             </ul>
         </nav>
     </header>
 
-    <!-- Master Brand Presentation Hook -->
     <section class="hero">
         <h1>Caelaria</h1>
         <p>Next-Generation Simulations. Real-World Readiness.</p>
-        <button class="cta-btn" onclick="document.getElementById('ecosystem').scrollIntoView({behavior: 'smooth'});">Explore Environment</button>
+        <button class="cta-btn" onclick="window.location.href='escapes.html'">Initialize Environments</button>
     </section>
 
-    <hr style="border: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(148,163,184,0.1), transparent);">
-
-    <!-- The Integrated Functional Modules Section -->
-    <section class="container" id="ecosystem">
+    <section class="container">
         <h2 class="section-title">The Simulation Ecosystem</h2>
         <div class="grid">
             
-            <!-- Module A: Escapes -->
             <div class="card">
                 <span class="card-tag">Caelaria Escapes</span>
                 <h3>Gamified Compliance Realities</h3>
-                <p>Immersive, story-driven incident response environments built to challenge personnel, test cross-departmental coordination, and turn routine security compliance training into localized strategy games.</p>
-                <a href="#" class="card-link" onclick="alert('Simulation node initializing... In development.'); return false;">Initialize Scenario &rarr;</a>
+                <p>Immersive, story-driven incident response environments built to challenge personnel and transform standard compliance metrics into strategy scenarios.</p>
+                <a href="escapes.html" class="card-link">View Scenarios &rarr;</a>
             </div>
 
-            <!-- Module B: Technical Labs -->
             <div class="card">
                 <span class="card-tag">Caelaria Labs</span>
                 <h3>Adaptive Technical Sandboxes</h3>
-                <p>Cloud-first execution environments hosting automated threats. Developers and security specialists manipulate direct network firewalls and tackle code vulnerabilities inside isolated structures.</p>
-                <a href="#" class="card-link" onclick="alert('Sandbox architecture routing... In development.'); return false;">Access Labs &rarr;</a>
+                <p>Cloud-first execution environments hosting live structural challenges. Handle firewalls and code vulnerabilities directly inside isolated spaces.</p>
+                <a href="labs.html" class="card-link">Access Labs &rarr;</a>
             </div>
 
-            <!-- Module C: Portfolio Compiler -->
             <div class="card">
-                <span class="card-tag">Verified Artifacts</span>
-                <h3>Competency Portfolio Compiler</h3>
-                <p>Algorithmic assessment matrices track execution choices in real-time, compiling student actions into dynamic, employer-ready cryptographic GitHub portfolio milestones.</p>
-                <a href="#" class="card-link" onclick="alert('Artifact index dark. Awaiting active simulation logs.'); return false;">View Portfolio Blueprint &rarr;</a>
+                <span class="card-tag">Caelaria Advisory</span>
+                <h3>High-Tier Structural Strategy</h3>
+                <p>Institutional framework auditing, curricular pipeline development, and custom network profile assessment mapping.</p>
+                <a href="consulting.html" class="card-link">Request Consultation &rarr;</a>
             </div>
 
         </div>
     </section>
 
-    <!-- Advisory Integration Section -->
-    <section class="container" id="consulting" style="background-color: rgba(26, 31, 38, 0.3); max-width: 100%;">
-        <div style="max-width: 1200px; margin: 0 auto;">
-            <h2 class="section-title">Caelaria Advisory</h2>
-            <div class="split-layout">
-                <div class="split-content">
-                    <p>We provide high-tier institutional consulting, structural network auditing, and tailored curricular framework deployment for corporate entities and evolving engineering pipelines.</p>
-                    <p>By mapping organizational vulnerabilities directly to automated training protocols, we close the critical operational gap separating technical training models from active workplace threat realities.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Core Philosophy / Narrative Section -->
-    <section class="container" id="about">
-        <h2 class="section-title">The Foundation</h2>
-        <div style="max-width: 800px; margin: 0 auto; text-align: center; color: var(--text-muted);">
-            <p style="margin-bottom: 1.5rem;">Caelaria takes its name from the primordial cosmic vault—the deep, vast infinite. Our mission is to transform defensive complexity into clear, observable tactical strategy.</p>
-            <p>We reject dry lectures and predictable check-box training metrics. By building immersive, adaptive simulation architectures, we empower technical operators and non-technical stakeholders alike to master data navigation, outplay threats, and establish undeniable engineering readiness.</p>
-        </div>
-    </section>
-
-    <!-- Clear Institutional / Grant Matrix Section -->
-    <section class="container" id="fees">
-        <h2 class="section-title">Institutional Framework & Fees</h2>
-        <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
-            Transparent structure options scaled for regional education pipelines, academic consortium deployment, and commercial business infrastructures.
-        </p>
-        <table class="fee-table">
-            <thead>
-                <tr>
-                    <th>Engagement Tiers</th>
-                    <th>Structural Deliverables</th>
-                    <th>Financial Framework</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><strong>Academic Module Tier</strong></td>
-                    <td>Integrated lab licensing for high school or community college tech curriculums. Includes base sandbox deployment and automated compliance matrices.</td>
-                    <td><span class="price">Grant Funded / Institutional Licensing</span></td>
-                </tr>
-                <tr>
-                    <td><strong>Enterprise Escape Sandbox</strong></td>
-                    <td>Customized incident response simulation events tailored directly to proprietary company infrastructure profiles and remote compliance stress tests.</td>
-                    <td><span class="price">Custom Flat Invoicing</span></td>
-                </tr>
-                <tr>
-                    <td><strong>Strategic Advisory Operations</strong></td>
-                    <td>Full institutional operational assessment, architecture auditing, and dedicated BILT-model optimization tracking.</td>
-                    <td><span class="price">Retainer Matrix / Corporate Scope</span></td>
-                </tr>
-            </tbody>
-        </table>
-    </section>
-
-    <!-- Standard Compliant Corporate Footer -->
     <footer>
         <p>&copy; 2026 Caelaria. All rights reserved. | Next-Generation Simulations. Real-World Readiness.</p>
     </footer>
