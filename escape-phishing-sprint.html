@@ -25,7 +25,7 @@
         <button onclick="resetGame()">Reset Module</button>
         <a href="escapes.html">Back to Escapes</a>
       </div>
-      <div id="result" class="result"></div>
+      <div id="result" class="result" role="status" aria-live="polite"></div>
     </div>
   </div>
   <script>
@@ -34,10 +34,10 @@
       {id:2,subject:"URGENT: payroll lockout - verify now",from:"payroll@caelaria-security-check.com",phish:true},
       {id:3,subject:"Workshop reminder",from:"training@caelaria.org",phish:false}
     ];
-    let attempts=0;
+    let attempts=0,finished=false;
     function render(){const root=document.getElementById('mailList');root.innerHTML='';mails.forEach(m=>{const d=document.createElement('div');d.className='mail';d.innerHTML=`<strong>${m.subject}</strong><p>From: ${m.from}</p><div class="actions"><button onclick="flagMail(${m.id})">Flag as Phishing</button></div>`;root.appendChild(d);});}
-    function flagMail(id){attempts++;const picked=mails.find(m=>m.id===id);const result=document.getElementById('result');if(picked.phish){result.className='result ok';result.textContent=`Correct. You contained the phishing email in ${attempts} attempt(s).`;return;}if(attempts>=3){result.className='result bad';result.textContent='Module failed. Too many incorrect escalations.';return;}result.className='result bad';result.textContent=`Incorrect. ${3-attempts} attempt(s) left.`;}
-    function resetGame(){attempts=0;const result=document.getElementById('result');result.className='result';result.textContent='';render();}
+    function flagMail(id){if(finished)return;attempts++;const picked=mails.find(m=>m.id===id);const result=document.getElementById('result');if(picked.phish){result.className='result ok';result.textContent=`Correct. You contained the phishing email in ${attempts} attempt(s).`;finished=true;return;}if(attempts>=3){result.className='result bad';result.textContent='Module failed. Too many incorrect escalations.';finished=true;return;}result.className='result bad';result.textContent=`Incorrect. ${3-attempts} attempt(s) left.`;}
+    function resetGame(){attempts=0;finished=false;const result=document.getElementById('result');result.className='result';result.textContent='';render();}
     render();
   </script>
 </body>

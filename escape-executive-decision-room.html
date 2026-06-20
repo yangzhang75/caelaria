@@ -18,15 +18,15 @@
   <div class="wrap">
     <div class="card">
       <h1>Executive Crisis Decision Room</h1>
-      <div class="step"><p>1) Initial signal: suspected account takeover + media inquiry.</p><select id="s1"><option value="">Choose action</option><option>Delay and gather more data for 24h</option><option>Activate incident command and legal/comms sync</option><option>Post public denial immediately</option></select></div>
-      <div class="step"><p>2) Evidence: customer records may be exposed.</p><select id="s2"><option value="">Choose action</option><option>Notify only internal IT</option><option>Preserve logs, start impact assessment, prep regulator workflow</option><option>Delete suspicious logs to reduce panic</option></select></div>
-      <div class="step"><p>3) Executive update needed in 30 minutes.</p><select id="s3"><option value="">Choose action</option><option>Share verified facts, unknowns, and next checkpoint</option><option>Share unverified root cause as final</option><option>Skip update until full forensic closure</option></select></div>
+      <div class="step"><p>1) Initial signal: suspected account takeover + media inquiry.</p><select id="s1" aria-label="Step 1: Choose action for initial account takeover signal"><option value="">Choose action</option><option>Delay and gather more data for 24h</option><option>Activate incident command and legal/comms sync</option><option>Post public denial immediately</option></select></div>
+      <div class="step"><p>2) Evidence: customer records may be exposed.</p><select id="s2" aria-label="Step 2: Choose action for exposed customer records"><option value="">Choose action</option><option>Notify only internal IT</option><option>Preserve logs, start impact assessment, prep regulator workflow</option><option>Delete suspicious logs to reduce panic</option></select></div>
+      <div class="step"><p>3) Executive update needed in 30 minutes.</p><select id="s3" aria-label="Step 3: Choose action for executive update"><option value="">Choose action</option><option>Share verified facts, unknowns, and next checkpoint</option><option>Share unverified root cause as final</option><option>Skip update until full forensic closure</option></select></div>
       <div class="actions">
         <button onclick="evaluateRun()">Submit Decisions</button>
         <button onclick="resetGame()">Reset Module</button>
         <a href="escapes.html">Back to Escapes</a>
       </div>
-      <div id="result" class="result"></div>
+      <div id="result" class="result" role="status" aria-live="polite"></div>
     </div>
   </div>
   <script>

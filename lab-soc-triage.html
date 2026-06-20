@@ -20,20 +20,20 @@
       <h1>SOC Triage Fundamentals</h1>
       <p>Classify each alert correctly to pass the triage module.</p>
       <div class="alert">Alert A: 600 failed logins from one subnet in 5 minutes.
-        <select id="a"><option value="">Select severity</option><option>Low</option><option>Medium</option><option>High</option><option>Critical</option></select>
+        <select id="a" aria-label="Alert A severity"><option value="">Select severity</option><option>Low</option><option>Medium</option><option>High</option><option>Critical</option></select>
       </div>
       <div class="alert">Alert B: Single malware detection quarantined automatically.
-        <select id="b"><option value="">Select severity</option><option>Low</option><option>Medium</option><option>High</option><option>Critical</option></select>
+        <select id="b" aria-label="Alert B severity"><option value="">Select severity</option><option>Low</option><option>Medium</option><option>High</option><option>Critical</option></select>
       </div>
       <div class="alert">Alert C: Privileged account token reused from impossible travel location.
-        <select id="c"><option value="">Select severity</option><option>Low</option><option>Medium</option><option>High</option><option>Critical</option></select>
+        <select id="c" aria-label="Alert C severity"><option value="">Select severity</option><option>Low</option><option>Medium</option><option>High</option><option>Critical</option></select>
       </div>
       <div class="actions">
         <button onclick="grade()">Submit Triage</button>
         <button onclick="resetGame()">Reset Module</button>
         <a href="labs.html">Back to Labs</a>
       </div>
-      <div id="result" class="result"></div>
+      <div id="result" class="result" role="status" aria-live="polite"></div>
     </div>
   </div>
   <script>
