@@ -31,7 +31,9 @@ document.getElementById('requestForm').addEventListener('submit', function(event
   document.body.appendChild(mailtoLink);
   mailtoLink.click();
   document.body.removeChild(mailtoLink);
-  window.location.href = 'thank-you.html';
+  window.setTimeout(() => {
+    window.location.href = 'thank-you.html';
+  }, 300);
 });
 </script>
 </body>
