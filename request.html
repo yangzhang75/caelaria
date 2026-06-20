@@ -261,7 +261,7 @@ footer{border-top:1px solid var(--line);text-align:center;padding:3rem 1rem;colo
 
                 <div class="btn-row">
                     <button type="submit">Submit Project Inquiry</button>
-                    <a href="https://ndepriest.youcanbook.me/" class="btn" target="_blank" rel="noreferrer">Schedule Consultation</a>
+                    <a href="https://ndepriest.youcanbook.me/" class="btn" target="_blank" rel="noopener noreferrer">Schedule Consultation</a>
                 </div>
 
                 <p class="note">
@@ -333,13 +333,10 @@ document.getElementById('requestForm').addEventListener('submit', function(event
         email: values.email
     }));
 
-    const mailtoLink = document.createElement('a');
-    mailtoLink.href = `mailto:depriestn@hocking.edu?subject=${subject}&body=${body}`;
-    mailtoLink.style.display = 'none';
-    document.body.appendChild(mailtoLink);
-    mailtoLink.click();
-    document.body.removeChild(mailtoLink);
+    const mailtoHref = `mailto:depriestn@hocking.edu?subject=${subject}&body=${body}`;
+    window.location.href = mailtoHref;
 
+    // Give the browser a moment to hand off the mailto protocol before redirecting.
     window.setTimeout(() => {
         window.location.href = 'thank-you.html';
     }, 300);
