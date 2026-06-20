@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Escape Module | Phishing Investigation Sprint</title>
+  <style>
+    :root{--bg:#10151b;--card:#1a212a;--text:#e2e8f0;--muted:#94a3b8;--teal:#0ea5e9;--ok:#22c55e;--bad:#ef4444}
+    *{box-sizing:border-box;margin:0;padding:0}body{background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif;padding:2rem}
+    .wrap{max-width:900px;margin:auto}.card{background:var(--card);border:1px solid rgba(148,163,184,.2);border-radius:12px;padding:1.5rem}
+    h1{font-size:1.5rem;margin-bottom:.8rem}p{color:var(--muted);line-height:1.6}.mail{margin:.9rem 0;padding:.9rem;border:1px solid rgba(148,163,184,.2);border-radius:8px}
+    .actions{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1rem}button,a{border:1px solid var(--teal);background:transparent;color:var(--teal);padding:.7rem 1rem;border-radius:6px;cursor:pointer;text-decoration:none}
+    button:hover,a:hover{background:var(--teal);color:#051018}.result{margin-top:1rem;padding:.8rem;border-radius:6px;display:none}
+    .ok{display:block;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.4);color:var(--ok)}
+    .bad{display:block;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.4);color:var(--bad)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Phishing Investigation Sprint</h1>
+      <p>Goal: Identify the phishing message and contain risk in under 3 attempts.</p>
+      <div id="mailList"></div>
+      <div class="actions">
+        <button onclick="resetGame()">Reset Module</button>
+        <a href="escapes.html">Back to Escapes</a>
+      </div>
+      <div id="result" class="result"></div>
+    </div>
+  </div>
+  <script>
+    const mails=[
+      {id:1,subject:"Benefits enrollment update",from:"hr@caelaria.org",phish:false},
+      {id:2,subject:"URGENT: payroll lockout - verify now",from:"payroll@caelaria-security-check.com",phish:true},
+      {id:3,subject:"Workshop reminder",from:"training@caelaria.org",phish:false}
+    ];
+    let attempts=0;
+    function render(){const root=document.getElementById('mailList');root.innerHTML='';mails.forEach(m=>{const d=document.createElement('div');d.className='mail';d.innerHTML=`<strong>${m.subject}</strong><p>From: ${m.from}</p><div class="actions"><button onclick="flagMail(${m.id})">Flag as Phishing</button></div>`;root.appendChild(d);});}
+    function flagMail(id){attempts++;const picked=mails.find(m=>m.id===id);const result=document.getElementById('result');if(picked.phish){result.className='result ok';result.textContent=`Correct. You contained the phishing email in ${attempts} attempt(s).`;return;}if(attempts>=3){result.className='result bad';result.textContent='Module failed. Too many incorrect escalations.';return;}result.className='result bad';result.textContent=`Incorrect. ${3-attempts} attempt(s) left.`;}
+    function resetGame(){attempts=0;const result=document.getElementById('result');result.className='result';result.textContent='';render();}
+    render();
+  </script>
+</body>
+</html>
