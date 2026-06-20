@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Escape Room — Server Access | Caelaria</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ── Reset & base ──────────────────────────────────────────── */
+    *{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#0b0e14;--card:#111820;--teal:#0ea5e9;--green:#22c55e;
+      --red:#ef4444;--amber:#f59e0b;--text:#e2e8f0;--muted:#94a3b8;
+      --line:rgba(148,163,184,.14);--floor-h:29%;
+    }
+    html{scroll-behavior:smooth}
+    body{
+      background:var(--bg);color:var(--text);
+      font-family:'Inter',sans-serif;
+      overflow-x:hidden;
+      padding-top:2.6rem; /* space for game-core HUD */
+    }
+
+    /* ── Page header ───────────────────────────────────────────── */
+    #page-header{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:.55rem 1rem;background:rgba(11,14,20,.95);
+      border-bottom:1px solid var(--line);flex-wrap:wrap;gap:.5rem;
+    }
+    #page-header a{
+      color:var(--muted);text-decoration:none;font-size:.8rem;
+      font-family:'Orbitron',sans-serif;text-transform:uppercase;
+      letter-spacing:.1rem;transition:color .2s;
+    }
+    #page-header a:hover{color:var(--teal)}
+    #page-header h1{
+      font-family:'Orbitron',sans-serif;text-transform:uppercase;
+      font-size:.82rem;letter-spacing:.18rem;color:var(--text);
+    }
+    #btn-hint{
+      font-family:'Orbitron',sans-serif;text-transform:uppercase;
+      letter-spacing:.1rem;font-size:.7rem;padding:.35rem .8rem;
+      border:1px solid var(--teal);background:transparent;
+      color:var(--teal);border-radius:5px;cursor:pointer;transition:.2s;
+    }
+    #btn-hint:hover{background:rgba(14,165,233,.15)}
+    #btn-hint:disabled{border-color:var(--line);color:var(--muted);cursor:default}
+
+    /* ── Game container ────────────────────────────────────────── */
+    #game-container{
+      max-width:900px;margin:0 auto;padding:.65rem 1rem 1.2rem;
+    }
+
+    /* ── Room scene ────────────────────────────────────────────── */
+    #room-wrap{position:relative;width:100%;padding-bottom:56.25%;margin-bottom:.7rem}
+    #room-scene{
+      position:absolute;inset:0;
+      background:
+        radial-gradient(ellipse 65% 35% at 50% 0%, rgba(14,165,233,.07) 0%, transparent 100%),
+        linear-gradient(180deg,#080c12 0%,#0c1420 68%,#101828 68%,#0b1220 100%);
+      border:1px solid rgba(14,165,233,.2);border-radius:10px;
+      overflow:hidden;
+    }
+    /* Subtle scanline texture */
+    #room-scene::before{
+      content:'';position:absolute;inset:0;
+      background-image:repeating-linear-gradient(
+        0deg,transparent,transparent 3px,rgba(0,0,0,.12) 3px,rgba(0,0,0,.12) 4px
+      );
+      pointer-events:none;z-index:2;
+    }
+    /* Ceiling light beam */
+    #room-scene::after{
+      content:'';position:absolute;top:0;left:50%;
+      transform:translateX(-50%);
+      width:40%;height:68%;
+      background:radial-gradient(ellipse at top,rgba(14,165,233,.06) 0%,transparent 70%);
+      pointer-events:none;z-index:1;
+    }
+    /* Floor edge highlight */
+    .room-floor-line{
+      position:absolute;bottom:var(--floor-h);left:0;right:0;
+      height:1px;background:linear-gradient(90deg,transparent,rgba(14,165,233,.18) 20%,rgba(14,165,233,.32) 50%,rgba(14,165,233,.18) 80%,transparent);
+      z-index:3;
+    }
+    /* Floor area */
+    .room-floor-area{
+      position:absolute;bottom:0;left:0;right:0;height:var(--floor-h);
+      background:
+        repeating-linear-gradient(90deg,transparent,transparent 59px,rgba(14,165,233,.04) 60px),
+        repeating-linear-gradient(0deg,transparent,transparent 59px,rgba(14,165,233,.04) 60px),
+        linear-gradient(180deg,#101828,#0b1220);
+      z-index:1;
+    }
+
+    /* ── Hotspots ──────────────────────────────────────────────── */
+    .hotspot{
+      position:absolute;z-index:10;cursor:pointer;
+      display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
+      transition:filter .18s ease,transform .15s ease;
+      user-select:none;
+    }
+    .hotspot:hover,.hotspot:focus-visible{
+      filter:brightness(1.3) drop-shadow(0 0 10px rgba(14,165,233,.55));
+      transform:translateY(-2%);
+    }
+    .hotspot:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:4px}
+
+    /* Pulsing interaction indicator (hidden once examined) */
+    .hs-ping{
+      position:absolute;top:-3px;right:-3px;
+      width:9px;height:9px;border-radius:50%;
+      background:var(--teal);box-shadow:0 0 5px var(--teal);
+      animation:ping 2.2s ease-out infinite;
+      z-index:20;pointer-events:none;
+    }
+    .hotspot.interacted .hs-ping{display:none}
+    @keyframes ping{
+      0%,100%{transform:scale(1);opacity:.9}
+      60%{transform:scale(2.2);opacity:0}
+    }
+
+    /* Status LED overlay (positioned top-right of the object SVG area) */
+    .hs-led{
+      position:absolute;top:4%;right:4%;
+      width:clamp(6px,1.2vw,10px);height:clamp(6px,1.2vw,10px);
+      border-radius:50%;background:var(--muted);
+      box-shadow:0 0 4px currentColor;transition:background .4s;z-index:15;
+    }
+    .hs-led.green{background:var(--green);color:var(--green)}
+    .hs-led.red{background:var(--red);color:var(--red)}
+    .hs-led.teal{background:var(--teal);color:var(--teal)}
+    .hs-led.pulse{animation:led-pulse 1.6s ease-in-out infinite}
+    @keyframes led-pulse{0%,100%{opacity:.65}50%{opacity:1}}
+
+    /* Label below object */
+    .hs-name{
+      position:absolute;bottom:calc(-1.5em - 2px);left:50%;
+      transform:translateX(-50%);
+      font-family:'Orbitron',sans-serif;
+      font-size:clamp(6px,1.1vw,10px);
+      color:rgba(14,165,233,.6);text-transform:uppercase;
+      letter-spacing:.06rem;white-space:nowrap;
+    }
+
+    /* SVG fills its hotspot container */
+    .hotspot svg{width:100%;height:100%;display:block}
+
+    /* ── Inventory bar ─────────────────────────────────────────── */
+    #inv-bar{
+      display:flex;align-items:center;gap:.6rem;
+      padding:.5rem .75rem;
+      background:rgba(11,18,28,.9);border:1px solid var(--line);
+      border-radius:8px;min-height:3.2rem;flex-wrap:wrap;
+    }
+    #inv-title{
+      font-family:'Orbitron',sans-serif;font-size:.64rem;
+      letter-spacing:.14rem;color:var(--muted);text-transform:uppercase;
+      flex-shrink:0;
+    }
+    #inv-slots{display:flex;gap:.45rem;flex-wrap:wrap;flex:1;align-items:center}
+    .inv-empty{color:rgba(148,163,184,.35);font-size:.78rem;font-style:italic}
+    .inv-item{
+      display:flex;align-items:center;gap:.35rem;
+      padding:.3rem .65rem;background:rgba(14,165,233,.08);
+      border:1px solid rgba(14,165,233,.25);border-radius:6px;
+      font-size:.8rem;cursor:pointer;transition:.18s;
+    }
+    .inv-item:hover{background:rgba(14,165,233,.16);border-color:var(--teal)}
+    .inv-item:focus-visible{outline:2px solid var(--teal)}
+    .inv-item.active{
+      background:rgba(14,165,233,.22);border-color:var(--teal);
+      box-shadow:0 0 8px rgba(14,165,233,.35);
+    }
+    .inv-item .item-icon{font-size:1.1rem;line-height:1}
+    .inv-item .item-name{
+      font-size:.74rem;color:var(--text);
+      font-family:'Inter',sans-serif;
+    }
+
+    #use-hint-row{
+      display:flex;align-items:center;gap:.5rem;margin-left:auto;
+      font-size:.75rem;color:var(--muted);
+    }
+    #active-item-hint{
+      font-size:.72rem;color:var(--teal);font-style:italic;
+      min-height:1.2em;margin-top:.3rem;
+    }
+
+    /* ── Action log ────────────────────────────────────────────── */
+    #action-log{
+      margin-top:.5rem;min-height:2.4rem;
+      display:flex;flex-direction:column-reverse;gap:.22rem;
+    }
+    .log-entry{
+      font-size:.76rem;color:var(--muted);padding:.15rem 0;
+      border-left:2px solid rgba(14,165,233,.25);padding-left:.55rem;
+      animation:log-in .25s ease;
+    }
+    .log-entry.ok{border-color:var(--green);color:#86efac}
+    .log-entry.bad{border-color:var(--red);color:#fca5a5}
+    .log-entry.info{border-color:var(--teal);color:#7dd3fc}
+    @keyframes log-in{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+    /* ── Dialog overlay ────────────────────────────────────────── */
+    .dlg-overlay{
+      position:fixed;inset:0;z-index:7000;
+      background:rgba(0,0,0,.75);
+      display:flex;align-items:center;justify-content:center;
+      font-family:'Inter',sans-serif;
+    }
+    .dlg-card{
+      background:linear-gradient(180deg,#161d28,#0f1620);
+      border:1px solid rgba(14,165,233,.3);border-radius:14px;
+      padding:1.8rem 1.6rem;max-width:380px;width:92%;
+      box-shadow:0 0 50px rgba(14,165,233,.1);
+    }
+    .dlg-icon{font-size:2.2rem;margin-bottom:.5rem;line-height:1;text-align:center}
+    .dlg-title{
+      font-family:'Orbitron',sans-serif;text-transform:uppercase;
+      letter-spacing:.16rem;font-size:.9rem;margin-bottom:.6rem;
+      color:var(--text);text-align:center;
+    }
+    .dlg-body{
+      color:var(--muted);font-size:.85rem;line-height:1.6;
+      text-align:center;margin-bottom:1.2rem;
+      white-space:pre-wrap;
+    }
+    .dlg-actions{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap}
+    .dlg-btn{
+      font-family:'Orbitron',sans-serif;text-transform:uppercase;
+      letter-spacing:.1rem;font-size:.67rem;padding:.6rem 1.1rem;
+      border-radius:6px;cursor:pointer;transition:.18s;
+    }
+    .dlg-btn-primary{border:1px solid var(--teal);background:transparent;color:var(--teal)}
+    .dlg-btn-primary:hover{background:rgba(14,165,233,.15)}
+    .dlg-btn-secondary{border:1px solid var(--line);background:transparent;color:var(--muted)}
+    .dlg-btn-secondary:hover{border-color:var(--teal);color:var(--teal)}
+
+    /* ── Visual keypad dialog ──────────────────────────────────── */
+    .kd-wrap{text-align:center}
+    .kd-display{
+      font-family:'Orbitron',monospace;font-size:1.6rem;
+      letter-spacing:.5rem;color:var(--teal);
+      background:rgba(0,0,0,.4);border:1px solid rgba(14,165,233,.3);
+      border-radius:8px;padding:.5rem 1rem;margin-bottom:.85rem;
+      min-width:9rem;display:inline-block;min-height:2.6rem;
+    }
+    .kd-grid{
+      display:grid;grid-template-columns:repeat(3,1fr);
+      gap:.4rem;max-width:200px;margin:0 auto .8rem;
+    }
+    .kd-btn{
+      font-family:'Orbitron',sans-serif;font-size:.9rem;font-weight:600;
+      padding:.6rem;border:1px solid rgba(14,165,233,.25);
+      background:rgba(14,165,233,.06);color:var(--text);
+      border-radius:6px;cursor:pointer;transition:.15s;
+    }
+    .kd-btn:hover{background:rgba(14,165,233,.18);border-color:var(--teal);color:var(--teal)}
+    .kd-btn.kd-action{font-size:.75rem;color:var(--muted)}
+    .kd-btn.kd-enter{
+      border-color:var(--green);color:var(--green);
+      background:rgba(34,197,94,.06);
+    }
+    .kd-btn.kd-enter:hover{background:rgba(34,197,94,.18)}
+    .kd-error{color:var(--red);font-size:.78rem;min-height:1.2em;margin-top:.3rem}
+    .kd-hint{color:var(--muted);font-size:.74rem;margin-bottom:.4rem;line-height:1.4}
+
+    /* ── Overlay intro / start screen ─────────────────────────── */
+    #start-screen{
+      position:absolute;inset:0;z-index:50;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      background:rgba(8,12,18,.9);border-radius:10px;text-align:center;padding:1.5rem;
+    }
+    #start-screen h2{
+      font-family:'Orbitron',sans-serif;text-transform:uppercase;
+      font-size:clamp(1rem,3vw,1.6rem);letter-spacing:.2rem;
+      color:var(--teal);margin-bottom:.6rem;
+    }
+    #start-screen p{
+      color:var(--muted);font-size:clamp(.75rem,2vw,.9rem);
+      max-width:480px;line-height:1.65;margin-bottom:1.4rem;
+    }
+    #start-screen .objectives{
+      display:flex;flex-direction:column;gap:.35rem;
+      margin-bottom:1.4rem;text-align:left;
+      font-size:clamp(.72rem,1.8vw,.82rem);color:var(--text);
+    }
+    #start-screen .obj-item::before{content:'▸ ';color:var(--teal)}
+    #btn-start{
+      font-family:'Orbitron',sans-serif;text-transform:uppercase;
+      letter-spacing:.18rem;font-size:.76rem;padding:.85rem 2rem;
+      border:1px solid var(--teal);background:transparent;
+      color:var(--teal);border-radius:7px;cursor:pointer;transition:.2s;
+    }
+    #btn-start:hover{background:rgba(14,165,233,.15);box-shadow:0 0 20px rgba(14,165,233,.3)}
+
+    /* ── Responsive ────────────────────────────────────────────── */
+    @media(max-width:600px){
+      body{padding-top:2.4rem}
+      #game-container{padding:.5rem .6rem 1rem}
+      .hs-name{font-size:6px}
+      .kd-grid{gap:.3rem}
+      .kd-btn{padding:.5rem;font-size:.8rem}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Page header ─────────────────────────────────────────────── -->
+<div id="page-header">
+  <a href="escapes.html">← Escapes</a>
+  <h1>Server Access: Room&nbsp;One</h1>
+  <button id="btn-hint" aria-label="Use a hint (3 remaining)">
+    💡 Hint (<span id="hint-count">3</span>)
+  </button>
+</div>
+
+<!-- ── Game container ──────────────────────────────────────────── -->
+<div id="game-container">
+
+  <!-- Room scene wrapper (16:9 via padding-bottom trick) -->
+  <div id="room-wrap">
+    <div id="room-scene" role="region" aria-label="Escape room. Click or tab to objects and press Enter to interact.">
+
+      <!-- Static room dressing -->
+      <div class="room-floor-line" aria-hidden="true"></div>
+      <div class="room-floor-area" aria-hidden="true"></div>
+
+      <!-- Start screen overlay -->
+      <div id="start-screen">
+        <h2>Server Access</h2>
+        <p>You're locked in the server room. The facility is shutting down in 5 minutes. Find the access code and escape before the lockdown seals every exit.</p>
+        <div class="objectives" role="list" aria-label="Objectives">
+          <span class="obj-item" role="listitem">Investigate the room for clues</span>
+          <span class="obj-item" role="listitem">Collect items and use them on objects</span>
+          <span class="obj-item" role="listitem">Find the access code and enter it on the keypad</span>
+          <span class="obj-item" role="listitem">Escape through the security door</span>
+        </div>
+        <button id="btn-start">▶ Start Mission</button>
+      </div>
+
+      <!-- ── HOTSPOT: Server rack ─────────────────────────────── -->
+      <div id="hs-server" class="hotspot" data-id="server"
+           role="button" tabindex="0" aria-label="Server rack"
+           style="left:3%;bottom:29%;width:9%;height:48%">
+        <div class="hs-led teal pulse" id="led-server" aria-hidden="true"></div>
+        <svg viewBox="0 0 44 82" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="1" y="1" width="42" height="80" rx="2" fill="#0b1820" stroke="#1e3d60" stroke-width="1.5"/>
+          <rect x="3" y="6"  width="38" height="7" rx="1" fill="#07101a" stroke="#1a3550" stroke-width=".7"/>
+          <rect x="3" y="16" width="38" height="7" rx="1" fill="#07101a" stroke="#1a3550" stroke-width=".7"/>
+          <rect x="3" y="26" width="38" height="7" rx="1" fill="#07101a" stroke="#1a3550" stroke-width=".7"/>
+          <rect x="3" y="36" width="38" height="7" rx="1" fill="#07101a" stroke="#1a3550" stroke-width=".7"/>
+          <circle cx="37" cy="9.5"  r="2.2" fill="#22c55e"/>
+          <circle cx="31" cy="9.5"  r="2.2" fill="#0ea5e9"/>
+          <circle cx="37" cy="19.5" r="2.2" fill="#22c55e"/>
+          <circle cx="37" cy="29.5" r="2.2" fill="#f59e0b"/>
+          <circle cx="37" cy="39.5" r="2.2" fill="#22c55e"/>
+          <rect x="3" y="50" width="38" height="20" rx="1" fill="#060d14" stroke="#1a3550" stroke-width=".6"/>
+          <text x="22" y="63" text-anchor="middle" fill="#0ea5e9" font-family="monospace" font-size="5.5" opacity=".75">SRV-01</text>
+          <text x="22" y="68" text-anchor="middle" fill="#334155" font-family="monospace" font-size="3.5">DIAGNOSTIC</text>
+        </svg>
+        <div class="hs-ping" aria-hidden="true"></div>
+        <span class="hs-name" aria-hidden="true">Server</span>
+      </div>
+
+      <!-- ── HOTSPOT: Desk ────────────────────────────────────── -->
+      <div id="hs-desk" class="hotspot" data-id="desk"
+           role="button" tabindex="0" aria-label="Security desk"
+           style="left:17%;bottom:29%;width:22%;height:34%">
+        <svg viewBox="0 0 80 62" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="35" y="32" width="10" height="9" fill="#1a2030"/>
+          <rect x="28" y="41" width="24" height="3" rx="1" fill="#1a2030"/>
+          <rect x="12" y="4"  width="56" height="33" rx="3" fill="#0d1828" stroke="#1e3d60" stroke-width="1.5"/>
+          <rect x="16" y="8"  width="48" height="25" rx="1" fill="#050c14"/>
+          <rect x="19" y="12" width="22" height="2" rx="1" fill="#0ea5e9" opacity=".45"/>
+          <rect x="19" y="17" width="32" height="2" rx="1" fill="#0ea5e9" opacity=".25"/>
+          <rect x="19" y="22" width="18" height="2" rx="1" fill="#0ea5e9" opacity=".25"/>
+          <circle cx="21" cy="29" r="1.5" fill="#0ea5e9" opacity=".7"/>
+          <rect x="1"  y="44" width="78" height="8" rx="2" fill="#2a200e" stroke="#3d2e15" stroke-width="1"/>
+          <!-- Sticky note (visible state) -->
+          <rect id="note-vis" x="54" y="37" width="16" height="14" rx="1" fill="#f59e0b" opacity=".88"/>
+          <text x="62" y="48" text-anchor="middle" fill="#78350f" font-family="monospace" font-size="5" opacity=".9">note</text>
+          <rect x="5"  y="52" width="6" height="10" fill="#1e1609"/>
+          <rect x="69" y="52" width="6" height="10" fill="#1e1609"/>
+        </svg>
+        <div class="hs-ping" aria-hidden="true"></div>
+        <span class="hs-name" aria-hidden="true">Desk</span>
+      </div>
+
+      <!-- ── HOTSPOT: Filing cabinet ──────────────────────────── -->
+      <div id="hs-cabinet" class="hotspot" data-id="cabinet"
+           role="button" tabindex="0" aria-label="Filing cabinet — locked"
+           style="left:47%;bottom:29%;width:8%;height:40%">
+        <div class="hs-led red pulse" id="led-cabinet" aria-hidden="true"></div>
+        <svg viewBox="0 0 38 72" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="1" y="1" width="36" height="70" rx="2" fill="#131c26" stroke="#24344a" stroke-width="1.5"/>
+          <rect x="3" y="5"  width="32" height="19" rx="1" fill="#0e1824" stroke="#1e2e42" stroke-width=".8"/>
+          <rect x="10" y="13" width="18" height="5" rx="2.5" fill="#1e2d40"/>
+          <rect x="3" y="27" width="32" height="19" rx="1" fill="#0e1824" stroke="#1e2e42" stroke-width=".8"/>
+          <rect x="10" y="35" width="18" height="5" rx="2.5" fill="#1e2d40"/>
+          <rect x="3" y="49" width="32" height="20" rx="1" fill="#0e1824" stroke="#1e2e42" stroke-width=".8"/>
+          <rect x="10" y="57" width="18" height="5" rx="2.5" fill="#1e2d40"/>
+          <!-- Lock icon -->
+          <rect x="15" y="1" width="8" height="7" rx="1" fill="#0e1824" stroke="#24344a" stroke-width=".7"/>
+          <rect x="13" y="6" width="12" height="9" rx="1.5" fill="#1e2d40" stroke="#24344a" stroke-width=".7"/>
+        </svg>
+        <div class="hs-ping" aria-hidden="true"></div>
+        <span class="hs-name" aria-hidden="true">Cabinet</span>
+      </div>
+
+      <!-- ── HOTSPOT: Plant ────────────────────────────────────── -->
+      <div id="hs-plant" class="hotspot" data-id="plant"
+           role="button" tabindex="0" aria-label="Plant pot"
+           style="left:62%;bottom:29%;width:8%;height:22%">
+        <svg viewBox="0 0 36 42" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <!-- Leaves -->
+          <ellipse cx="18" cy="10" rx="12" ry="10" fill="#166534" opacity=".9"/>
+          <ellipse cx="10" cy="14" rx="8" ry="7" fill="#15803d" opacity=".85" transform="rotate(-20 10 14)"/>
+          <ellipse cx="26" cy="14" rx="8" ry="7" fill="#15803d" opacity=".85" transform="rotate(20 26 14)"/>
+          <ellipse cx="18" cy="7"  rx="7" ry="8" fill="#16a34a" opacity=".8"/>
+          <!-- Pot -->
+          <path d="M10 28 L26 28 L24 41 L12 41 Z" fill="#7c3a22" stroke="#6b2f1a" stroke-width="1"/>
+          <rect x="8" y="26" width="20" height="4" rx="1" fill="#92461c" stroke="#7c3a22" stroke-width=".8"/>
+          <!-- Hidden keycard hint (slightly visible blue thing under leaves) -->
+          <rect x="21" y="17" width="8" height="5" rx="1" fill="#0ea5e9" opacity=".55" id="card-vis"/>
+        </svg>
+        <div class="hs-ping" aria-hidden="true"></div>
+        <span class="hs-name" aria-hidden="true">Plant</span>
+      </div>
+
+      <!-- ── HOTSPOT: Keypad ────────────────────────────────────── -->
+      <div id="hs-keypad" class="hotspot" data-id="keypad"
+           role="button" tabindex="0" aria-label="Security keypad"
+           style="left:71.5%;bottom:29%;width:5%;height:16%">
+        <div class="hs-led red" id="led-keypad" aria-hidden="true"></div>
+        <svg viewBox="0 0 30 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="1" y="1" width="28" height="42" rx="3" fill="#0e1a28" stroke="#1e3454" stroke-width="1.5"/>
+          <rect x="4" y="5" width="22" height="8" rx="1" fill="#060f1a" stroke="#1a2e48" stroke-width=".7"/>
+          <!-- Button grid 3x4 -->
+          <circle cx="9"  cy="19" r="2.5" fill="#1e3050"/>
+          <circle cx="15" cy="19" r="2.5" fill="#1e3050"/>
+          <circle cx="21" cy="19" r="2.5" fill="#1e3050"/>
+          <circle cx="9"  cy="26" r="2.5" fill="#1e3050"/>
+          <circle cx="15" cy="26" r="2.5" fill="#1e3050"/>
+          <circle cx="21" cy="26" r="2.5" fill="#1e3050"/>
+          <circle cx="9"  cy="33" r="2.5" fill="#1e3050"/>
+          <circle cx="15" cy="33" r="2.5" fill="#1e3050"/>
+          <circle cx="21" cy="33" r="2.5" fill="#1e3050"/>
+          <circle cx="9"  cy="40" r="2.5" fill="#162440"/>
+          <circle cx="15" cy="40" r="2.5" fill="#1e3050"/>
+          <circle cx="21" cy="40" r="2.5" fill="#162440"/>
+        </svg>
+        <div class="hs-ping" aria-hidden="true"></div>
+        <span class="hs-name" aria-hidden="true">Keypad</span>
+      </div>
+
+      <!-- ── HOTSPOT: Security door ─────────────────────────────── -->
+      <div id="hs-door" class="hotspot" data-id="door"
+           role="button" tabindex="0" aria-label="Security door — locked"
+           style="right:4%;bottom:29%;width:11.5%;height:58%">
+        <div class="hs-led red pulse" id="led-door" aria-hidden="true"></div>
+        <svg viewBox="0 0 50 95" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <!-- Door frame -->
+          <rect x="1" y="1" width="48" height="93" rx="2" fill="#0a141e" stroke="#1a2e42" stroke-width="2"/>
+          <rect x="4" y="4" width="42" height="87" rx="1" fill="#0d1a26" stroke="#162740" stroke-width="1"/>
+          <!-- Panel detail -->
+          <rect x="7" y="10" width="36" height="32" rx="1" fill="#090f18" stroke="#162030" stroke-width=".7"/>
+          <rect x="7" y="48" width="36" height="32" rx="1" fill="#090f18" stroke="#162030" stroke-width=".7"/>
+          <!-- Handle -->
+          <rect x="39" y="44" width="3" height="12" rx="1.5" fill="#1e3454"/>
+          <circle cx="40.5" cy="50" r="2.2" fill="#243c5a"/>
+          <!-- Warning stripe at bottom -->
+          <rect x="4" y="85" width="42" height="6" rx="0" fill="#1a1200" stroke="#3a2800" stroke-width=".5"/>
+          <line x1="10" y1="85" x2="8"  y2="91" stroke="#f59e0b" stroke-width="1.5" opacity=".6"/>
+          <line x1="16" y1="85" x2="14" y2="91" stroke="#f59e0b" stroke-width="1.5" opacity=".6"/>
+          <line x1="22" y1="85" x2="20" y2="91" stroke="#f59e0b" stroke-width="1.5" opacity=".6"/>
+          <line x1="28" y1="85" x2="26" y2="91" stroke="#f59e0b" stroke-width="1.5" opacity=".6"/>
+          <line x1="34" y1="85" x2="32" y2="91" stroke="#f59e0b" stroke-width="1.5" opacity=".6"/>
+          <line x1="40" y1="85" x2="38" y2="91" stroke="#f59e0b" stroke-width="1.5" opacity=".6"/>
+          <!-- Door status text -->
+          <text x="25" y="86" text-anchor="middle" fill="#334155" font-family="monospace" font-size="4">LOCKED</text>
+        </svg>
+        <div class="hs-ping" aria-hidden="true"></div>
+        <span class="hs-name" aria-hidden="true">Door</span>
+      </div>
+
+      <!-- Terminal screen (visible after USB inserted) -->
+      <div id="terminal-screen"
+           style="display:none;position:absolute;left:3%;bottom:calc(29% + 48%);
+                  width:9%;padding:2%;background:#050c14;border:1px solid rgba(14,165,233,.4);
+                  border-radius:2px;font-family:monospace;font-size:clamp(5px,1vw,9px);
+                  color:#0ea5e9;z-index:12;line-height:1.4;"
+           aria-live="polite" aria-label="Terminal output">
+        DIAGNOSTIC MODE<br>
+        <span style="color:#94a3b8">ACCESS CODE:</span><br>
+        <span style="color:#22c55e;font-weight:bold">BLUE-7743</span>
+      </div>
+
+    </div><!-- #room-scene -->
+  </div><!-- #room-wrap -->
+
+  <!-- ── Inventory bar ─────────────────────────────────────────── -->
+  <div id="inv-bar" role="region" aria-label="Inventory">
+    <span id="inv-title" aria-hidden="true">Inventory</span>
+    <div id="inv-slots">
+      <span class="inv-empty" aria-label="No items collected yet">No items</span>
+    </div>
+  </div>
+  <div id="active-item-hint" aria-live="polite" role="status"></div>
+
+  <!-- ── Action log ─────────────────────────────────────────────── -->
+  <div id="action-log" role="log" aria-live="polite" aria-label="Recent actions"></div>
+
+</div><!-- #game-container -->
+
+<!-- ── Game scripts ──────────────────────────────────────────────── -->
+<script src="game-core.js"></script>
+<script>
+'use strict';
+
+// ── Item definitions ─────────────────────────────────────────────────
+const ITEMS = {
+  sticky_note: { id:'sticky_note', name:'Sticky Note', icon:'📝',
+    desc:'Handwritten in marker:\n"blue server — 7743"' },
+  keycard:     { id:'keycard',     name:'Blue Keycard', icon:'💳',
+    desc:'An access card with a blue stripe. Fits the cabinet card slot.' },
+  usb_drive:   { id:'usb_drive',   name:'USB Drive',    icon:'💾',
+    desc:'Encrypted diagnostic drive. Plug it into the server terminal.' },
+};
+
+// Hint progression (context-sensitive)
+const HINTS = [
+  'Start by examining everything in the room. Some items are hidden in plain sight.',
+  'The filing cabinet needs a card to open. Look around for something blue.',
+  'Once you have the USB drive, plug it into the server rack to retrieve the access code.',
+  'The last four digits on the terminal are the keypad code.',
+];
+
+// ── Game state ────────────────────────────────────────────────────────
+let gs = {
+  phase: 'idle',       // idle | exploring | complete | failed
+  inventory: new Set(),
+  examined: new Set(),
+  states: {
+    cabinet: 'locked',   // locked | open
+    terminal: 'off',     // off | on
+    door: 'locked',      // locked | unlocked
+  },
+  activeItem: null,
+  hintsUsed: 0,
+  wrongCodes: 0,
+  timerInterval: null,
+  timeLeft: 300,
+  startTime: null,
+  hintIdx: 0,
+};
+
+// ── Initialise ────────────────────────────────────────────────────────
+CaelariaGame.createHUD({
+  objective: 'Investigate the server room',
+  showTimer: true,
+  showScore: true,
+});
+
+document.getElementById('btn-start').addEventListener('click', startGame);
+document.getElementById('btn-hint').addEventListener('click', useHint);
+
+// Keyboard navigation: Enter/Space activates hotspot
+document.querySelectorAll('.hotspot').forEach(el => {
+  el.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      interact(el.dataset.id);
+    }
+  });
+  el.addEventListener('click', () => interact(el.dataset.id));
+});
+
+// Click empty room area → deselect active item
+document.getElementById('room-scene').addEventListener('click', e => {
+  if (e.target.id === 'room-scene' || e.target.closest('.room-floor-area') || e.target.closest('.room-floor-line')) {
+    setActiveItem(null);
+  }
+});
+
+// ── Timer ─────────────────────────────────────────────────────────────
+function startTimer() {
+  gs.startTime = Date.now();
+  gs.timerInterval = setInterval(() => {
+    gs.timeLeft = Math.max(0, gs.timeLeft - 1);
+    const m = Math.floor(gs.timeLeft / 60);
+    const s = gs.timeLeft % 60;
+    const txt = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    const color = gs.timeLeft < 60 ? '#ef4444' : gs.timeLeft < 120 ? '#f59e0b' : '#e2e8f0';
+    CaelariaGame.updateHUD({ timerText: txt, timerColor: color });
+    if (gs.timeLeft === 0) triggerFail();
+  }, 1000);
+}
+
+// ── Start game ────────────────────────────────────────────────────────
+function startGame() {
+  document.getElementById('start-screen').style.display = 'none';
+  gs.phase = 'exploring';
+  startTimer();
+  CaelariaGame.updateHUD({
+    objective: 'Investigate the server room',
+    timerText: '05:00',
+    score: 100,
+  });
+  addLog('🔒 Mission started. Find a way out.', 'info');
+}
+
+// ── Hint system ───────────────────────────────────────────────────────
+function useHint() {
+  if (gs.phase !== 'exploring') return;
+  if (gs.hintsUsed >= HINTS.length) return;
+  const hint = HINTS[gs.hintsUsed];
+  gs.hintsUsed++;
+  gs.hintIdx++;
+  const remaining = Math.max(0, HINTS.length - gs.hintsUsed);
+  document.getElementById('hint-count').textContent = remaining;
+  if (remaining === 0) {
+    document.getElementById('btn-hint').disabled = true;
+  }
+  showDialog('💡', 'Hint', hint, [{ label: 'Got it', cls: 'dlg-btn-primary' }]);
+  addLog(`💡 Hint used. (${remaining} remaining)`, 'info');
+  refreshScore();
+}
+
+// ── Core interaction dispatch ─────────────────────────────────────────
+function interact(id) {
+  if (gs.phase !== 'exploring') return;
+  gs.examined.add(id);
+  markInteracted(id);
+
+  if (gs.activeItem) {
+    handleItemUse(gs.activeItem, id);
+  } else {
+    handleExamine(id);
+  }
+}
+
+// ── Examine (no item selected) ────────────────────────────────────────
+function handleExamine(id) {
+  switch (id) {
+
+    case 'server': {
+      if (gs.states.terminal === 'on') {
+        showDialog('🖥️', 'Server Rack', 'DIAGNOSTIC MODE ACTIVE\n\nACCESS CODE: BLUE-7743\n\nAuthentication pending.', [
+          { label: 'Close', cls: 'dlg-btn-secondary' },
+        ]);
+        addLog('🖥️ Terminal shows the access code.', 'info');
+      } else if (gs.inventory.has('usb_drive')) {
+        // Auto-prompt to use USB
+        showDialog('🖥️', 'Server Rack', 'The diagnostic port is empty. You have a USB drive in your inventory. Use it here to initialize diagnostic mode.', [
+          { label: 'Insert USB Drive', cls: 'dlg-btn-primary', action: () => applyItemOnObject('usb_drive', 'server') },
+          { label: 'Later', cls: 'dlg-btn-secondary' },
+        ]);
+      } else {
+        showDialog('🖥️', 'Server Rack', 'The server diagnostic port is empty. An indicator reads: "Insert USB to initialize."', [
+          { label: 'Close', cls: 'dlg-btn-secondary' },
+        ]);
+        addLog('🖥️ Server needs a USB drive.', '');
+      }
+      break;
+    }
+
+    case 'desk': {
+      if (!gs.inventory.has('sticky_note')) {
+        showDialog('🗒️', 'Security Desk', 'You find a sticky note on the desk surface. Someone scrawled something on it.', [
+          { label: 'Take Note', cls: 'dlg-btn-primary', action: () => pickUp('sticky_note') },
+          { label: 'Leave It', cls: 'dlg-btn-secondary' },
+        ]);
+      } else {
+        showDialog('🗒️', 'Security Desk', 'An empty desk. The sticky note is in your inventory.\n\nNote contents: "blue server — 7743"', [
+          { label: 'Close', cls: 'dlg-btn-secondary' },
+        ]);
+      }
+      CaelariaGame.updateHUD({ objective: 'Search the room for items' });
+      break;
+    }
+
+    case 'plant': {
+      if (!gs.inventory.has('keycard')) {
+        showDialog('🪴', 'Plant Pot', 'Tucked under the leaves you spot something blue — a security keycard!', [
+          { label: 'Take Keycard', cls: 'dlg-btn-primary', action: () => pickUp('keycard') },
+          { label: 'Leave It', cls: 'dlg-btn-secondary' },
+        ]);
+      } else {
+        showDialog('🪴', 'Plant Pot', 'Just a plant. You already have the keycard.', [
+          { label: 'Close', cls: 'dlg-btn-secondary' },
+        ]);
+      }
+      break;
+    }
+
+    case 'cabinet': {
+      if (gs.states.cabinet === 'locked') {
+        if (gs.inventory.has('keycard')) {
+          showDialog('🗄️', 'Filing Cabinet', 'The cabinet is locked. You have a keycard. Try it on the card slot?', [
+            { label: 'Use Keycard', cls: 'dlg-btn-primary', action: () => applyItemOnObject('keycard', 'cabinet') },
+            { label: 'Cancel', cls: 'dlg-btn-secondary' },
+          ]);
+        } else {
+          showDialog('🗄️', 'Filing Cabinet', 'The cabinet is locked with a card reader slot. You need a keycard.', [
+            { label: 'Close', cls: 'dlg-btn-secondary' },
+          ]);
+          addLog('🗄️ Cabinet locked — needs a keycard.', '');
+        }
+      } else {
+        showDialog('🗄️', 'Filing Cabinet', 'The cabinet is open. The USB drive is in your inventory.', [
+          { label: 'Close', cls: 'dlg-btn-secondary' },
+        ]);
+      }
+      break;
+    }
+
+    case 'keypad': {
+      if (gs.states.door === 'unlocked') {
+        showDialog('⌨️', 'Security Keypad', 'DOOR UNLOCKED. Exit through the door.', [
+          { label: 'Close', cls: 'dlg-btn-secondary' },
+        ]);
+        return;
+      }
+      if (gs.states.terminal === 'off') {
+        showDialog('⌨️', 'Security Keypad', 'The keypad shows: "SYSTEM LOCKED. Retrieve access code first."', [
+          { label: 'Close', cls: 'dlg-btn-secondary' },
+        ]);
+        addLog('⌨️ Keypad locked — find the access code first.', '');
+      } else {
+        showKeypadDialog();
+      }
+      break;
+    }
+
+    case 'door': {
+      if (gs.states.door === 'unlocked') {
+        closeDialog();
+        triggerWin();
+      } else {
+        showDialog('🚪', 'Security Door', 'The door is sealed. Use the keypad to enter the access code.', [
+          { label: 'Close', cls: 'dlg-btn-secondary' },
+        ]);
+        addLog('🚪 Door locked. Find the access code.', '');
+      }
+      break;
+    }
+  }
+}
+
+// ── Item use (item selected, then object clicked) ─────────────────────
+function handleItemUse(itemId, objectId) {
+  const combos = {
+    'keycard:cabinet':  () => applyItemOnObject('keycard',  'cabinet'),
+    'usb_drive:server': () => applyItemOnObject('usb_drive','server'),
+  };
+  const key = `${itemId}:${objectId}`;
+  if (combos[key]) {
+    combos[key]();
+    setActiveItem(null);
+  } else {
+    addLog(`⚠️ Can't use ${ITEMS[itemId].name} on that.`, 'bad');
+    setActiveItem(null);
+  }
+}
+
+// ── Apply item on object (shared use logic) ───────────────────────────
+function applyItemOnObject(itemId, objectId) {
+  if (itemId === 'keycard' && objectId === 'cabinet' && gs.states.cabinet === 'locked') {
+    gs.states.cabinet = 'open';
+    gs.inventory.delete('keycard');
+    gs.inventory.add('usb_drive');
+    setLED('cabinet', 'green');
+    markInteracted('cabinet');
+    updateCabinetVisual();
+    renderInventory();
+    addLog('✅ Keycard accepted. Cabinet open. Found a USB drive!', 'ok');
+    CaelariaGame.updateHUD({ objective: 'Use the USB drive on the server terminal' });
+    refreshScore();
+    closeDialog();
+    return;
+  }
+
+  if (itemId === 'usb_drive' && objectId === 'server' && gs.states.terminal === 'off') {
+    gs.states.terminal = 'on';
+    gs.inventory.delete('usb_drive');
+    document.getElementById('terminal-screen').style.display = 'block';
+    renderInventory();
+    setLED('server', 'green');
+    addLog('✅ USB inserted. Terminal online. Read the access code!', 'ok');
+    CaelariaGame.updateHUD({ objective: 'Enter the access code on the keypad' });
+    refreshScore();
+    closeDialog();
+
+    // Briefly highlight the terminal screen
+    const ts = document.getElementById('terminal-screen');
+    ts.style.boxShadow = '0 0 14px rgba(14,165,233,.6)';
+    setTimeout(() => { ts.style.boxShadow = ''; }, 2000);
+    return;
+  }
+
+  addLog(`⚠️ Nothing happens.`, 'bad');
+  closeDialog();
+}
+
+// ── Pick up item ──────────────────────────────────────────────────────
+function pickUp(itemId) {
+  gs.inventory.add(itemId);
+  renderInventory();
+  const it = ITEMS[itemId];
+  addLog(`🎒 Picked up: ${it.icon} ${it.name}`, 'ok');
+  refreshScore();
+  closeDialog();
+
+  if (itemId === 'sticky_note') {
+    CaelariaGame.updateHUD({ objective: 'Find more items to use' });
+    // Hide the sticky note from desk SVG
+    const noteVis = document.getElementById('note-vis');
+    if (noteVis) noteVis.style.display = 'none';
+  }
+  if (itemId === 'keycard') {
+    CaelariaGame.updateHUD({ objective: 'Use the keycard on the filing cabinet' });
+    const cardVis = document.getElementById('card-vis');
+    if (cardVis) cardVis.style.display = 'none';
+  }
+}
+
+// ── Keypad dialog ─────────────────────────────────────────────────────
+function showKeypadDialog() {
+  let code = '';
+  const CORRECT = '7743';
+
+  function updateDisplay() {
+    const disp = document.getElementById('kd-disp');
+    if (!disp) return;
+    disp.textContent = (code + '    ').slice(0, 4).split('').map((c, i) =>
+      i < code.length ? c : '_'
+    ).join(' ');
+  }
+
+  const hintText = gs.inventory.has('sticky_note') || gs.states.terminal === 'on'
+    ? 'The terminal read: BLUE‑7743. Enter the 4-digit code.'
+    : 'Retrieve the access code from the server terminal first.';
+
+  const keypadHtml = `
+    <div class="kd-wrap">
+      <div class="kd-display" id="kd-disp">_ _ _ _</div>
+      <p class="kd-hint">${hintText}</p>
+      <div class="kd-grid" id="kd-grid">
+        ${[1,2,3,4,5,6,7,8,9].map(n =>
+          `<button class="kd-btn" data-digit="${n}">${n}</button>`
+        ).join('')}
+        <button class="kd-btn kd-action" id="kd-clear">⌫</button>
+        <button class="kd-btn" data-digit="0">0</button>
+        <button class="kd-btn kd-enter" id="kd-submit">↵</button>
+      </div>
+      <div class="kd-error" id="kd-error" role="alert" aria-live="assertive"></div>
+    </div>
+  `;
+
+  showDialog('⌨️', 'Security Keypad', keypadHtml, [], true);
+
+  // Bind keypad buttons after dialog is rendered
+  requestAnimationFrame(() => {
+    document.querySelectorAll('#kd-grid .kd-btn[data-digit]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (code.length < 4) {
+          code += btn.dataset.digit;
+          updateDisplay();
+        }
+      });
+    });
+
+    const clearBtn = document.getElementById('kd-clear');
+    if (clearBtn) clearBtn.addEventListener('click', () => { code = code.slice(0, -1); updateDisplay(); });
+
+    const submitBtn = document.getElementById('kd-submit');
+    if (submitBtn) submitBtn.addEventListener('click', submitCode);
+
+    // Keyboard digit entry while dialog open
+    document.getElementById('kd-grid').addEventListener('keydown', e => {
+      if (/^[0-9]$/.test(e.key) && code.length < 4) { code += e.key; updateDisplay(); }
+      else if (e.key === 'Backspace') { code = code.slice(0, -1); updateDisplay(); }
+      else if (e.key === 'Enter') submitCode();
+    });
+  });
+
+  function submitCode() {
+    if (code.length < 4) {
+      const errEl = document.getElementById('kd-error');
+      if (errEl) errEl.textContent = 'Enter all 4 digits first.';
+      return;
+    }
+    if (code === CORRECT) {
+      gs.states.door = 'unlocked';
+      setLED('keypad', 'green');
+      setLED('door', 'green');
+      updateDoorVisual();
+      addLog('✅ Code accepted! DOOR UNLOCKED.', 'ok');
+      CaelariaGame.updateHUD({ objective: 'Exit through the security door!' });
+      refreshScore();
+      closeDialog();
+    } else {
+      gs.wrongCodes++;
+      code = '';
+      updateDisplay();
+      const errEl = document.getElementById('kd-error');
+      if (errEl) errEl.textContent = `Incorrect code. Attempt ${gs.wrongCodes}. Try again.`;
+      addLog(`❌ Wrong code (attempt ${gs.wrongCodes}).`, 'bad');
+      refreshScore();
+      // Shake the keypad hotspot
+      const hs = document.getElementById('hs-keypad');
+      if (hs) {
+        hs.style.animation = 'none';
+        hs.style.transform = 'translateX(-4px)';
+        setTimeout(() => { hs.style.transform = ''; }, 150);
+      }
+    }
+  }
+}
+
+// ── Win / Fail ────────────────────────────────────────────────────────
+function triggerWin() {
+  if (gs.phase === 'complete') return;
+  gs.phase = 'complete';
+  clearInterval(gs.timerInterval);
+
+  const elapsed = 300 - gs.timeLeft;
+  const timeMs = elapsed * 1000;
+  const score = calcScore();
+  const xp = calcXP();
+  const achievements = getAchievements(score, elapsed);
+
+  CaelariaGame.completeModule('escape-room', {
+    score, timeMs, xpEarned: xp, achievementsEarned: achievements,
+  });
+
+  const gradeMsg =
+    score >= 90 ? 'Flawless execution. You are a natural.' :
+    score >= 70 ? 'Clean escape. Well done, agent.' :
+    score >= 50 ? 'You made it out. Not your best work.' :
+                  'Escaped — barely. Review your technique.';
+
+  setTimeout(() => {
+    CaelariaGame.showSummary(
+      { score, timeMs, xpEarned: xp, achievementsEarned: achievements, message: gradeMsg },
+      {
+        onRetry: resetGame,
+        onBack: () => { window.location.href = 'escapes.html'; },
+      }
+    );
+  }, 600);
+}
+
+function triggerFail() {
+  if (gs.phase === 'failed') return;
+  gs.phase = 'failed';
+  clearInterval(gs.timerInterval);
+  addLog('⏱ Time expired. Lockdown complete.', 'bad');
+  CaelariaGame.updateHUD({ objective: 'MISSION FAILED — Time expired', timerColor: '#ef4444' });
+
+  setTimeout(() => {
+    CaelariaGame.showSummary(
+      {
+        score: 0,
+        timeMs: 300000,
+        xpEarned: 10,
+        achievementsEarned: [],
+        message: 'The lockdown sealed you inside. Try again.',
+      },
+      {
+        onRetry: resetGame,
+        onBack: () => { window.location.href = 'escapes.html'; },
+      }
+    );
+  }, 1200);
+}
+
+// ── Score & achievements ──────────────────────────────────────────────
+function calcScore() {
+  let s = 100;
+  // Time penalty: up to -30 over 5 minutes
+  s -= Math.round(((300 - gs.timeLeft) / 300) * 30);
+  // Hint penalty
+  s -= gs.hintsUsed * 7;
+  // Wrong code penalty
+  s -= gs.wrongCodes * 8;
+  return Math.max(0, Math.min(100, s));
+}
+
+function calcXP() {
+  let xp = 100;
+  if (gs.timeLeft > 240) xp += 50; // under 1 min
+  else if (gs.timeLeft > 180) xp += 25; // under 2 min
+  else if (gs.timeLeft > 120) xp += 10; // under 3 min
+  xp -= gs.hintsUsed * 5;
+  return Math.max(20, xp);
+}
+
+function getAchievements(score, elapsed) {
+  const a = [];
+  const profile = CaelariaGame.loadProfile();
+  if (!profile.completedModules['escape-room']) a.push('first_escape');
+  if (elapsed < 120) a.push('speed_runner');
+  if (gs.hintsUsed === 0) a.push('no_hints');
+  if (score >= 90) a.push('perfect_run');
+  if (gs.examined.size >= 6) a.push('explorer');
+  return a;
+}
+
+function refreshScore() {
+  if (gs.phase !== 'exploring') return;
+  CaelariaGame.updateHUD({ score: calcScore() });
+}
+
+// ── Visual updates ────────────────────────────────────────────────────
+function setLED(id, colorClass) {
+  const el = document.getElementById(`led-${id}`);
+  if (!el) return;
+  el.className = `hs-led ${colorClass}`;
+  if (colorClass === 'pulse') el.classList.add('pulse');
+}
+
+function markInteracted(id) {
+  const el = document.getElementById(`hs-${id}`);
+  if (el) el.classList.add('interacted');
+}
+
+function updateCabinetVisual() {
+  // Replace cabinet SVG lock with open state hint
+  const el = document.getElementById('hs-cabinet');
+  if (!el) return;
+  // Tilt bottom drawer open (CSS nudge)
+  const svg = el.querySelector('svg');
+  if (svg) {
+    // Add an "open drawer" rect overlay
+    const openRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    openRect.setAttribute('x', '3');
+    openRect.setAttribute('y', '52');
+    openRect.setAttribute('width', '32');
+    openRect.setAttribute('height', '6');
+    openRect.setAttribute('rx', '1');
+    openRect.setAttribute('fill', '#1e2d40');
+    openRect.setAttribute('transform', 'translateX(4)');
+    svg.appendChild(openRect);
+  }
+  el.setAttribute('aria-label', 'Filing cabinet — open');
+}
+
+function updateDoorVisual() {
+  const el = document.getElementById('hs-door');
+  if (el) el.setAttribute('aria-label', 'Security door — unlocked');
+  // Update the LOCKED text in door SVG to OPEN
+  const doorSvg = el && el.querySelector('svg');
+  if (doorSvg) {
+    const texts = doorSvg.querySelectorAll('text');
+    texts.forEach(t => { if (t.textContent === 'LOCKED') t.textContent = 'OPEN'; });
+  }
+  // Add a green glow to the door
+  const doorEl = document.getElementById('hs-door');
+  if (doorEl) doorEl.style.filter = 'drop-shadow(0 0 12px rgba(34,197,94,.55))';
+}
+
+// ── Inventory rendering ───────────────────────────────────────────────
+function renderInventory() {
+  const slots = document.getElementById('inv-slots');
+  if (!slots) return;
+
+  if (gs.inventory.size === 0) {
+    slots.innerHTML = '<span class="inv-empty" aria-label="No items collected yet">No items</span>';
+    return;
+  }
+
+  slots.innerHTML = '';
+  gs.inventory.forEach(id => {
+    const it = ITEMS[id];
+    if (!it) return;
+    const div = document.createElement('div');
+    div.className = 'inv-item' + (gs.activeItem === id ? ' active' : '');
+    div.setAttribute('role', 'button');
+    div.setAttribute('tabindex', '0');
+    div.setAttribute('aria-label', `${it.name}${gs.activeItem === id ? ' — selected, click an object to use' : ''}`);
+    div.setAttribute('aria-pressed', gs.activeItem === id ? 'true' : 'false');
+    div.innerHTML = `<span class="item-icon" aria-hidden="true">${it.icon}</span><span class="item-name">${it.name}</span>`;
+    div.addEventListener('click', () => setActiveItem(id));
+    div.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setActiveItem(id); } });
+    slots.appendChild(div);
+  });
+}
+
+function setActiveItem(id) {
+  gs.activeItem = gs.activeItem === id ? null : id;
+  renderInventory();
+  const hintEl = document.getElementById('active-item-hint');
+  const scene = document.getElementById('room-scene');
+  if (gs.activeItem) {
+    const it = ITEMS[gs.activeItem];
+    if (hintEl) hintEl.textContent = `Using ${it.icon} ${it.name} — click an object to apply it`;
+    if (scene) scene.style.cursor = 'crosshair';
+  } else {
+    if (hintEl) hintEl.textContent = '';
+    if (scene) scene.style.cursor = '';
+  }
+}
+
+// ── Action log ────────────────────────────────────────────────────────
+let logEntries = [];
+function addLog(msg, type) {
+  logEntries.unshift({ msg, type: type || '' });
+  if (logEntries.length > 3) logEntries.pop();
+  const el = document.getElementById('action-log');
+  if (!el) return;
+  el.innerHTML = logEntries.map(e =>
+    `<div class="log-entry ${e.type}">${e.msg}</div>`
+  ).join('');
+}
+
+// ── Dialog system ─────────────────────────────────────────────────────
+function showDialog(icon, title, body, actions, rawBody) {
+  closeDialog();
+
+  const overlay = document.createElement('div');
+  overlay.id = 'dlg-overlay';
+  overlay.className = 'dlg-overlay';
+  overlay.setAttribute('aria-modal', 'true');
+  overlay.setAttribute('role', 'dialog');
+  overlay.setAttribute('aria-label', title);
+
+  const actHtml = actions.map((a, i) =>
+    `<button class="dlg-btn ${a.cls || 'dlg-btn-secondary'}" data-idx="${i}">${a.label}</button>`
+  ).join('');
+
+  const bodyHtml = rawBody ? body : body.replace(/\n/g, '<br>');
+
+  overlay.innerHTML = `
+    <div class="dlg-card">
+      ${icon ? `<div class="dlg-icon" aria-hidden="true">${icon}</div>` : ''}
+      <h3 class="dlg-title">${title}</h3>
+      <div class="dlg-body">${bodyHtml}</div>
+      ${actions.length ? `<div class="dlg-actions">${actHtml}</div>` : ''}
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+
+  // Bind action handlers
+  overlay.querySelectorAll('.dlg-btn[data-idx]').forEach(btn => {
+    const i = parseInt(btn.dataset.idx, 10);
+    const a = actions[i];
+    btn.addEventListener('click', () => {
+      if (a && a.action) a.action();
+      else closeDialog();
+    });
+  });
+
+  // Click backdrop = close
+  overlay.addEventListener('click', e => { if (e.target === overlay) closeDialog(); });
+
+  // ESC = close
+  const escFn = e => { if (e.key === 'Escape') { closeDialog(); document.removeEventListener('keydown', escFn); } };
+  overlay._escFn = escFn;
+  document.addEventListener('keydown', escFn);
+
+  // Focus first interactive element
+  const firstFocus = overlay.querySelector('button, input');
+  if (firstFocus) setTimeout(() => firstFocus.focus(), 40);
+}
+
+function closeDialog() {
+  const d = document.getElementById('dlg-overlay');
+  if (d) {
+    if (d._escFn) document.removeEventListener('keydown', d._escFn);
+    d.remove();
+  }
+}
+
+// ── Reset ─────────────────────────────────────────────────────────────
+function resetGame() {
+  clearInterval(gs.timerInterval);
+  gs = {
+    phase: 'idle',
+    inventory: new Set(),
+    examined: new Set(),
+    states: { cabinet:'locked', terminal:'off', door:'locked' },
+    activeItem: null,
+    hintsUsed: 0,
+    wrongCodes: 0,
+    timerInterval: null,
+    timeLeft: 300,
+    startTime: null,
+    hintIdx: 0,
+  };
+
+  // Reset hotspot classes
+  document.querySelectorAll('.hotspot').forEach(el => el.classList.remove('interacted'));
+
+  // Reset LEDs
+  setLED('server', 'teal pulse');
+  setLED('cabinet', 'red pulse');
+  setLED('keypad', 'red');
+  setLED('door', 'red pulse');
+
+  // Reset door visual
+  const doorSvg = document.querySelector('#hs-door svg');
+  if (doorSvg) {
+    doorSvg.querySelectorAll('text').forEach(t => { if (t.textContent === 'OPEN') t.textContent = 'LOCKED'; });
+  }
+  const doorEl = document.getElementById('hs-door');
+  if (doorEl) { doorEl.style.filter = ''; doorEl.setAttribute('aria-label', 'Security door — locked'); }
+
+  // Reset cabinet
+  const cabEl = document.getElementById('hs-cabinet');
+  if (cabEl) cabEl.setAttribute('aria-label', 'Filing cabinet — locked');
+
+  // Hide terminal screen
+  const ts = document.getElementById('terminal-screen');
+  if (ts) ts.style.display = 'none';
+
+  // Restore SVG hidden elements
+  const noteVis = document.getElementById('note-vis');
+  if (noteVis) noteVis.style.display = '';
+  const cardVis = document.getElementById('card-vis');
+  if (cardVis) cardVis.style.display = '';
+
+  // Reset inventory display
+  renderInventory();
+  setActiveItem(null);
+
+  // Reset HUD
+  CaelariaGame.updateHUD({
+    objective: 'Investigate the server room',
+    score: 100,
+    timerText: '05:00',
+    timerColor: '#e2e8f0',
+  });
+
+  // Reset hint button
+  document.getElementById('hint-count').textContent = HINTS.length;
+  document.getElementById('btn-hint').disabled = false;
+
+  // Reset action log
+  logEntries = [];
+  const logEl = document.getElementById('action-log');
+  if (logEl) logEl.innerHTML = '';
+
+  // Show start screen
+  document.getElementById('start-screen').style.display = 'flex';
+}
+</script>
+</body>
+</html>
