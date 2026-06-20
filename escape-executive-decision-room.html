@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Escape Module | Executive Crisis Decision Room</title>
+  <style>
+    :root{--bg:#10151b;--card:#1b222b;--text:#e2e8f0;--muted:#94a3b8;--teal:#0ea5e9;--ok:#22c55e;--bad:#ef4444}
+    *{box-sizing:border-box;margin:0;padding:0}body{background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif;padding:2rem}
+    .wrap{max-width:900px;margin:auto}.card{background:var(--card);border:1px solid rgba(148,163,184,.2);padding:1.5rem;border-radius:12px}
+    h1{margin-bottom:.7rem}.step{margin:1rem 0;padding:1rem;border:1px solid rgba(148,163,184,.2);border-radius:8px}.step p{color:var(--muted);margin-bottom:.6rem}
+    select{width:100%;background:#0b1015;color:var(--text);border:1px solid rgba(14,165,233,.35);padding:.6rem;border-radius:6px}
+    .actions{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1rem}button,a{border:1px solid var(--teal);background:transparent;color:var(--teal);padding:.7rem 1rem;border-radius:6px;cursor:pointer;text-decoration:none}
+    button:hover,a:hover{background:var(--teal);color:#051018}.result{margin-top:1rem;padding:.8rem;border-radius:6px;display:none}.ok{display:block;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.4);color:var(--ok)}.bad{display:block;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.4);color:var(--bad)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Executive Crisis Decision Room</h1>
+      <div class="step"><p>1) Initial signal: suspected account takeover + media inquiry.</p><select id="s1"><option value="">Choose action</option><option>Delay and gather more data for 24h</option><option>Activate incident command and legal/comms sync</option><option>Post public denial immediately</option></select></div>
+      <div class="step"><p>2) Evidence: customer records may be exposed.</p><select id="s2"><option value="">Choose action</option><option>Notify only internal IT</option><option>Preserve logs, start impact assessment, prep regulator workflow</option><option>Delete suspicious logs to reduce panic</option></select></div>
+      <div class="step"><p>3) Executive update needed in 30 minutes.</p><select id="s3"><option value="">Choose action</option><option>Share verified facts, unknowns, and next checkpoint</option><option>Share unverified root cause as final</option><option>Skip update until full forensic closure</option></select></div>
+      <div class="actions">
+        <button onclick="evaluateRun()">Submit Decisions</button>
+        <button onclick="resetGame()">Reset Module</button>
+        <a href="/home/runner/work/caelaria/caelaria/escapes.html">Back to Escapes</a>
+      </div>
+      <div id="result" class="result"></div>
+    </div>
+  </div>
+  <script>
+    function evaluateRun(){
+      const pass=document.getElementById('s1').selectedIndex===2&&document.getElementById('s2').selectedIndex===2&&document.getElementById('s3').selectedIndex===1;
+      const r=document.getElementById('result');
+      if(pass){r.className='result ok';r.textContent='Pass. You balanced escalation, evidence integrity, and executive communication.';}
+      else{r.className='result bad';r.textContent='Try again. Prioritize coordinated response, evidence handling, and clear status updates.';}
+    }
+    function resetGame(){['s1','s2','s3'].forEach(id=>document.getElementById(id).selectedIndex=0);const r=document.getElementById('result');r.className='result';r.textContent='';}
+  </script>
+</body>
+</html>
