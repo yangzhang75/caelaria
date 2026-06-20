@@ -8,19 +8,86 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#12161a;--silver:#e2e8f0;--muted:#94a3b8;--teal:#0ea5e9;--line:rgba(148,163,184,.12)}*{margin:0;padding:0;box-sizing:border-box}body{min-height:100vh;display:flex;flex-direction:column;background:radial-gradient(circle at top center,rgba(14,165,233,.12),transparent 40%),linear-gradient(180deg,#0d1116,#12161a);color:var(--silver);font-family:'Inter',sans-serif;overflow-x:hidden}body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(14,165,233,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(14,165,233,.03) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:-1}header{position:sticky;top:0;z-index:999;display:flex;justify-content:space-between;align-items:center;padding:1rem 2rem;border-bottom:1px solid var(--line);backdrop-filter:blur(10px);background:rgba(18,22,26,.85)}.logo-area img{height:42px;width:auto;display:block}nav ul{display:flex;list-style:none;gap:1.4rem;flex-wrap:wrap;justify-content:center}nav a{text-decoration:none;color:var(--muted);font-family:'Orbitron',sans-serif;font-size:.75rem;letter-spacing:.15rem;text-transform:uppercase;transition:.3s ease}nav a:hover{color:var(--teal);text-shadow:0 0 10px rgba(14,165,233,.5)}main{flex:1;display:flex;align-items:center;justify-content:center;padding:4rem 1.25rem}.card{max-width:840px;width:100%;background:linear-gradient(180deg,#1a1f26,#11161c);border:1px solid var(--line);border-radius:18px;padding:2.5rem;box-shadow:0 0 40px rgba(14,165,233,.08);text-align:center}.kicker{color:var(--teal);font-family:'Orbitron',sans-serif;text-transform:uppercase;letter-spacing:.25rem;font-size:.75rem;margin-bottom:1rem}h1{font-family:'Orbitron',sans-serif;text-transform:uppercase;font-size:clamp(2rem,5vw,3.5rem);letter-spacing:.15rem;margin-bottom:1.2rem}.lead,.summary li,.note{color:var(--muted);line-height:1.9}.summary{list-style:none;display:grid;gap:.75rem;margin:2rem 0;text-align:left}.summary li{border:1px solid rgba(148,163,184,.1);border-radius:10px;padding:1rem 1.1rem;background:rgba(8,13,18,.45)}.summary strong{color:var(--silver)}.cta-row{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:2rem}.btn{display:inline-block;font-family:'Orbitron',sans-serif;text-transform:uppercase;letter-spacing:.15rem;text-decoration:none;padding:1rem 2rem;border-radius:6px;transition:.3s ease;font-size:.75rem}.btn-primary{color:var(--teal);border:1px solid var(--teal)}.btn-primary:hover{background:var(--teal);color:#071015;box-shadow:0 0 30px rgba(14,165,233,.45)}.btn-secondary{border:1px solid var(--line);color:var(--silver);background:rgba(26,31,38,.35)}.btn-secondary:hover{border-color:var(--teal);color:var(--teal)}footer{border-top:1px solid var(--line);text-align:center;padding:3rem 1rem;color:var(--muted);font-family:'Orbitron',sans-serif;font-size:.75rem;letter-spacing:.12rem}@media(max-width:900px){header{flex-direction:column;gap:1rem}}</style>
+:root{--bg:#12161a;--silver:#e2e8f0;--muted:#94a3b8;--teal:#0ea5e9;--line:rgba(148,163,184,.12)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{min-height:100vh;display:flex;flex-direction:column;background:radial-gradient(circle at top center,rgba(14,165,233,.12),transparent 40%),linear-gradient(180deg,#0d1116,#12161a);color:var(--silver);font-family:'Inter',sans-serif;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(14,165,233,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(14,165,233,.03) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:-1}
+header{position:sticky;top:0;z-index:999;display:flex;justify-content:space-between;align-items:center;padding:1rem 2rem;border-bottom:1px solid var(--line);backdrop-filter:blur(10px);background:rgba(18,22,26,.85)}
+.logo-area img{height:42px;width:auto;display:block}
+nav ul{display:flex;list-style:none;gap:1.4rem;flex-wrap:wrap;justify-content:center}
+nav a{text-decoration:none;color:var(--muted);font-family:'Orbitron',sans-serif;font-size:.75rem;letter-spacing:.15rem;text-transform:uppercase;transition:.3s ease}
+nav a:hover{color:var(--teal);text-shadow:0 0 10px rgba(14,165,233,.5)}
+main{flex:1;display:flex;align-items:center;justify-content:center;padding:4rem 1.25rem}
+.card{max-width:840px;width:100%;background:linear-gradient(180deg,#1a1f26,#11161c);border:1px solid var(--line);border-radius:18px;padding:2.5rem;box-shadow:0 0 40px rgba(14,165,233,.08);text-align:center}
+.kicker{color:var(--teal);font-family:'Orbitron',sans-serif;text-transform:uppercase;letter-spacing:.25rem;font-size:.75rem;margin-bottom:1rem}
+h1{font-family:'Orbitron',sans-serif;text-transform:uppercase;font-size:clamp(2rem,5vw,3.5rem);letter-spacing:.15rem;margin-bottom:1.2rem}
+.lead,.summary li,.note{color:var(--muted);line-height:1.9}
+.summary{list-style:none;display:grid;gap:.75rem;margin:2rem 0;text-align:left}
+.summary li{border:1px solid rgba(148,163,184,.1);border-radius:10px;padding:1rem 1.1rem;background:rgba(8,13,18,.45)}
+.summary strong{color:var(--silver)}
+.cta-row{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:2rem}
+.btn{display:inline-block;font-family:'Orbitron',sans-serif;text-transform:uppercase;letter-spacing:.15rem;text-decoration:none;padding:1rem 2rem;border-radius:6px;transition:.3s ease;font-size:.75rem}
+.btn-primary{color:var(--teal);border:1px solid var(--teal)}
+.btn-primary:hover{background:var(--teal);color:#071015;box-shadow:0 0 30px rgba(14,165,233,.45)}
+.btn-secondary{border:1px solid var(--line);color:var(--silver);background:rgba(26,31,38,.35)}
+.btn-secondary:hover{border-color:var(--teal);color:var(--teal)}
+footer{border-top:1px solid var(--line);text-align:center;padding:3rem 1rem;color:var(--muted);font-family:'Orbitron',sans-serif;font-size:.75rem;letter-spacing:.12rem}
+@media(max-width:900px){header{flex-direction:column;gap:1rem}}
+</style>
 </head>
 <body>
-<header><div class="logo-area"><a href="index.html"><img src="logo.png" alt="Caelaria Logo"></a></div><nav><ul><li><a href="index.html">Home</a></li><li><a href="escapes.html">Escapes</a></li><li><a href="labs.html">Labs</a></li><li><a href="consulting.html">Consulting</a></li><li><a href="orders.html">Orders</a></li><li><a href="about.html">About</a></li><li><a href="request.html">Start a Project</a></li></ul></nav></header>
-<main><div class="card"><div class="kicker">Submission Confirmation</div><h1>Thanks for reaching out to Caelaria.</h1><p class="lead">Your project inquiry has been packaged into the prototype follow-up workflow. If your email app did not open, you can return to the form and resubmit or contact the team directly from your preferred client.</p><ul class="summary"><li><strong>Organization:</strong> <span id="summaryOrganization">Pending</span></li><li><strong>Primary Service Line:</strong> <span id="summaryServiceLine">Pending</span></li><li><strong>Request Route:</strong> <span id="summaryRoute">Pending</span></li><li><strong>Preferred Next Step:</strong> <span id="summaryFollowup">Pending</span></li><li><strong>Timeline / Budget:</strong> <span id="summaryTiming">Pending</span></li></ul><p class="note">Next step: review your drafted email, send it, and expect a follow-up conversation around scope, purchase options, or a custom build path.</p><div class="cta-row"><a href="request.html" class="btn btn-secondary">Submit Another Inquiry</a><a href="orders.html" class="btn btn-primary">Browse Solutions</a></div></div></main>
+<header>
+    <div class="logo-area">
+        <a href="index.html"><img src="logo.png" alt="Caelaria Logo"></a>
+    </div>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="escapes.html">Escapes</a></li>
+            <li><a href="labs.html">Labs</a></li>
+            <li><a href="consulting.html">Consulting</a></li>
+            <li><a href="orders.html">Orders</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="request.html">Start a Project</a></li>
+        </ul>
+    </nav>
+</header>
+<main>
+    <div class="card">
+        <div class="kicker">Submission Confirmation</div>
+        <h1>Thanks for reaching out to Caelaria.</h1>
+        <p class="lead">
+            Your project inquiry has been packaged into the prototype follow-up workflow.
+            If your email app did not open, you can return to the form and resubmit
+            or contact the team directly from your preferred client.
+        </p>
+        <ul class="summary">
+            <li><strong>Organization:</strong> <span id="summaryOrganization">Pending</span></li>
+            <li><strong>Primary Service Line:</strong> <span id="summaryServiceLine">Pending</span></li>
+            <li><strong>Request Route:</strong> <span id="summaryRoute">Pending</span></li>
+            <li><strong>Preferred Next Step:</strong> <span id="summaryFollowup">Pending</span></li>
+            <li><strong>Timeline / Budget:</strong> <span id="summaryTiming">Pending</span></li>
+        </ul>
+        <p class="note">
+            Next step: review your drafted email, send it, and expect a follow-up conversation
+            around scope, purchase options, or a custom build path.
+        </p>
+        <div class="cta-row">
+            <a href="request.html" class="btn btn-secondary">Submit Another Inquiry</a>
+            <a href="orders.html" class="btn btn-primary">Browse Solutions</a>
+        </div>
+    </div>
+</main>
 <footer>© 2026 CAELARIA • CYBER • AI • AUTOMATION • READINESS</footer>
 <script>
 const summary = JSON.parse(sessionStorage.getItem('caelariaRequestSummary') || '{}');
+const timingSummary = [summary.timeline, summary.budget].filter(Boolean).join(' / ');
+
 document.getElementById('summaryOrganization').textContent = summary.organization || 'Pending';
 document.getElementById('summaryServiceLine').textContent = summary.serviceLine || 'Pending';
 document.getElementById('summaryRoute').textContent = summary.requestRoute || 'Pending';
 document.getElementById('summaryFollowup').textContent = summary.followup || 'Pending';
-document.getElementById('summaryTiming').textContent = [summary.timeline, summary.budget].filter(Boolean).join(' / ') || 'Pending';
+document.getElementById('summaryTiming').textContent = timingSummary || 'Pending';
 </script>
 </body>
 </html>
