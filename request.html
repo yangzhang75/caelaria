@@ -261,11 +261,11 @@ footer{border-top:1px solid var(--line);text-align:center;padding:3rem 1rem;colo
 
                 <div class="btn-row">
                     <button type="submit">Submit Project Inquiry</button>
-                    <a href="https://ndepriest.youcanbook.me/" class="btn" target="_blank" rel="noopener noreferrer">Schedule Consultation</a>
+                    <a href="https://ndepriest.youcanbook.me/" class="btn" target="_blank" rel="noopener noreferrer" aria-label="Schedule Consultation opens in a new window">Schedule Consultation</a>
                 </div>
 
                 <p class="note">
-                    Prototype note: submitting this form prepares an internal follow-up email and then sends you to a confirmation page.
+                    Prototype note: submitting this form opens a prepared follow-up email draft and then automatically sends you to a confirmation page.
                     A future version can connect to a CRM, payment flow, or hosted form backend.
                 </p>
             </form>
@@ -330,7 +330,8 @@ document.getElementById('requestForm').addEventListener('submit', function(event
         followup: values.followup,
         timeline: values.timeline,
         budget: values.budget,
-        email: values.email
+        email: values.email,
+        mailtoHref
     }));
 
     const mailtoHref = `mailto:depriestn@hocking.edu?subject=${subject}&body=${body}`;
