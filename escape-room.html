@@ -619,7 +619,6 @@ function useHint() {
   if (gs.hintsUsed >= HINTS.length) return;
   const hint = HINTS[gs.hintsUsed];
   gs.hintsUsed++;
-  gs.hintIdx++;
   const remaining = Math.max(0, HINTS.length - gs.hintsUsed);
   document.getElementById('hint-count').textContent = remaining;
   if (remaining === 0) {
@@ -993,9 +992,9 @@ function calcScore() {
 
 function calcXP() {
   let xp = 100;
-  if (gs.timeLeft > 240) xp += 50; // under 1 min
-  else if (gs.timeLeft > 180) xp += 25; // under 2 min
-  else if (gs.timeLeft > 120) xp += 10; // under 3 min
+  if (gs.timeLeft > 240) xp += 50; // completed in under 1 minute
+  else if (gs.timeLeft > 180) xp += 25; // completed in under 2 minutes
+  else if (gs.timeLeft > 120) xp += 10; // completed in under 3 minutes
   xp -= gs.hintsUsed * 5;
   return Math.max(20, xp);
 }
@@ -1021,7 +1020,6 @@ function setLED(id, colorClass) {
   const el = document.getElementById(`led-${id}`);
   if (!el) return;
   el.className = `hs-led ${colorClass}`;
-  if (colorClass === 'pulse') el.classList.add('pulse');
 }
 
 function markInteracted(id) {

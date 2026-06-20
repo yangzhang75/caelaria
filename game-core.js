@@ -345,7 +345,7 @@ const CaelariaGame = (() => {
     overlay.innerHTML = `
       <div style="background:linear-gradient(180deg,#1a1f26,#10151c);border:1px solid rgba(14,165,233,.28);border-radius:16px;padding:2.4rem 1.8rem;max-width:400px;width:92%;text-align:center;box-shadow:0 0 60px rgba(14,165,233,.12)">
         <div style="font-size:2.8rem;margin-bottom:.35rem">${grade.icon}</div>
-        <div style="font-family:'Orbitron',Orbitron,sans-serif;text-transform:uppercase;letter-spacing:.22rem;font-size:1.35rem;color:${grade.color};margin-bottom:.5rem">${grade.label}</div>
+        <div style="font-family:'Orbitron',sans-serif;text-transform:uppercase;letter-spacing:.22rem;font-size:1.35rem;color:${grade.color};margin-bottom:.5rem">${grade.label}</div>
         <p style="color:#94a3b8;margin-bottom:1.4rem;font-size:.88rem;line-height:1.5">${result.message || 'Module complete'}</p>
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.65rem;margin-bottom:1.4rem">
           <div style="background:rgba(255,255,255,.05);border-radius:8px;padding:.75rem .4rem">
@@ -363,8 +363,8 @@ const CaelariaGame = (() => {
         </div>
         ${achHtml ? `<div style="display:flex;flex-wrap:wrap;gap:.4rem;justify-content:center;margin-bottom:1.4rem">${achHtml}</div>` : ''}
         <div style="display:flex;gap:.75rem;justify-content:center">
-          <button id="cg-sum-retry" style="font-family:'Orbitron',Orbitron,sans-serif;text-transform:uppercase;letter-spacing:.1rem;font-size:.68rem;padding:.7rem 1.3rem;border:1px solid #0ea5e9;background:transparent;color:#0ea5e9;border-radius:6px;cursor:pointer;transition:.2s">Retry</button>
-          <button id="cg-sum-back"  style="font-family:'Orbitron',Orbitron,sans-serif;text-transform:uppercase;letter-spacing:.1rem;font-size:.68rem;padding:.7rem 1.3rem;border:1px solid rgba(148,163,184,.22);background:transparent;color:#94a3b8;border-radius:6px;cursor:pointer;transition:.2s">Back</button>
+          <button id="cg-sum-retry" style="font-family:'Orbitron',sans-serif;text-transform:uppercase;letter-spacing:.1rem;font-size:.68rem;padding:.7rem 1.3rem;border:1px solid #0ea5e9;background:transparent;color:#0ea5e9;border-radius:6px;cursor:pointer;transition:.2s">Retry</button>
+          <button id="cg-sum-back"  style="font-family:'Orbitron',sans-serif;text-transform:uppercase;letter-spacing:.1rem;font-size:.68rem;padding:.7rem 1.3rem;border:1px solid rgba(148,163,184,.22);background:transparent;color:#94a3b8;border-radius:6px;cursor:pointer;transition:.2s">Back</button>
         </div>
       </div>
     `;
