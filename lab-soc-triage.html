@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lab Module | SOC Triage Fundamentals</title>
+  <style>
+    :root{--bg:#0d1217;--card:#1a212a;--text:#e2e8f0;--muted:#94a3b8;--teal:#0ea5e9;--ok:#22c55e;--bad:#ef4444}
+    *{box-sizing:border-box;margin:0;padding:0}body{background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif;padding:2rem}
+    .wrap{max-width:900px;margin:auto}.card{background:var(--card);border:1px solid rgba(148,163,184,.2);padding:1.5rem;border-radius:12px}
+    h1{margin-bottom:.7rem}p{color:var(--muted);line-height:1.6}.alert{margin:1rem 0;padding:1rem;border:1px solid rgba(148,163,184,.2);border-radius:8px}
+    select{width:100%;margin-top:.6rem;background:#0a0f14;color:var(--text);border:1px solid rgba(14,165,233,.3);padding:.6rem;border-radius:6px}
+    .actions{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1rem}button,a{border:1px solid var(--teal);background:transparent;color:var(--teal);padding:.7rem 1rem;border-radius:6px;cursor:pointer;text-decoration:none}
+    button:hover,a:hover{background:var(--teal);color:#051018}.result{margin-top:1rem;padding:.8rem;border-radius:6px;display:none}.ok{display:block;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.4);color:var(--ok)}.bad{display:block;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.4);color:var(--bad)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>SOC Triage Fundamentals</h1>
+      <p>Classify each alert correctly to pass the triage module.</p>
+      <div class="alert">Alert A: 600 failed logins from one subnet in 5 minutes.
+        <select id="a"><option value="">Select severity</option><option>Low</option><option>Medium</option><option>High</option><option>Critical</option></select>
+      </div>
+      <div class="alert">Alert B: Single malware detection quarantined automatically.
+        <select id="b"><option value="">Select severity</option><option>Low</option><option>Medium</option><option>High</option><option>Critical</option></select>
+      </div>
+      <div class="alert">Alert C: Privileged account token reused from impossible travel location.
+        <select id="c"><option value="">Select severity</option><option>Low</option><option>Medium</option><option>High</option><option>Critical</option></select>
+      </div>
+      <div class="actions">
+        <button onclick="grade()">Submit Triage</button>
+        <button onclick="resetGame()">Reset Module</button>
+        <a href="/home/runner/work/caelaria/caelaria/labs.html">Back to Labs</a>
+      </div>
+      <div id="result" class="result"></div>
+    </div>
+  </div>
+  <script>
+    function grade(){
+      const ans={a:'High',b:'Low',c:'Critical'};
+      const ok=Object.keys(ans).every(k=>document.getElementById(k).value===ans[k]);
+      const r=document.getElementById('result');
+      if(ok){r.className='result ok';r.textContent='Pass. Correct triage supports faster containment and prioritization.';}
+      else{r.className='result bad';r.textContent='Try again. Reassess volume, privilege risk, and automated containment context.';}
+    }
+    function resetGame(){['a','b','c'].forEach(id=>document.getElementById(id).value='');const r=document.getElementById('result');r.className='result';r.textContent='';}
+  </script>
+</body>
+</html>
